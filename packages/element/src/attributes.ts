@@ -1,7 +1,7 @@
 import { LIVE_EXPRESSIONS, type LiveExpression } from 'mesh-avatar';
 
 /** Shown when the element has no `src`: the Miko sample published with the Mesh Avatar Studio site. */
-export const DEFAULT_SRC = 'https://shinshin86.github.io/mesh-avatar-studio/miko.mavatar';
+export const DEFAULT_SRC = 'https://khanhlegood12.github.io/mesh-avatar-studio/miko.mavatar';
 
 export const EMOTIONS = ['happy', 'sad', 'angry', 'surprised', 'relaxed', 'neutral'] as const;
 export type Emotion = typeof EMOTIONS[number];

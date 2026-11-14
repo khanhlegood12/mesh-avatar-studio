@@ -5,7 +5,7 @@ import type { MeshAvatarElement } from '../packages/element/src/index';
 import { samplePresent, sampleSkipReason } from './sample';
 
 const sample = `http://127.0.0.1:${process.env.PLAYWRIGHT_SITE_PORT ?? 5174}/mesh-avatar-studio/miko.mavatar`;
-const defaultSrc = 'https://shinshin86.github.io/mesh-avatar-studio/miko.mavatar';
+const defaultSrc = 'https://khanhlegood12.github.io/mesh-avatar-studio/miko.mavatar';
 const outside = new WeakMap<Page, string[]>();
 
 test.beforeEach(async ({ context, page }) => {

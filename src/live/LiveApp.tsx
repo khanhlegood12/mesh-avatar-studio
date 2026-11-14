@@ -200,7 +200,7 @@ export function LiveApp() {
           <small>{t.remoteNames}</small>
           <div className="remote-actions"><button type="button" onClick={() => { void loadRemote('POST'); }}>{t.regenerate}</button><small>{t.regenerateHelp}</small></div>
         </> : <small>{t.remoteUnavailable}</small>}
-        <a href="https://github.com/shinshin86/mesh-avatar-studio/blob/main/docs/reference.md#switching-expressions-from-other-apps" target="_blank" rel="noreferrer">{t.remoteDocs}</a></div>
+        <a href="https://github.com/khanhlegood12/mesh-avatar-studio/blob/main/docs/reference.md#switching-expressions-from-other-apps" target="_blank" rel="noreferrer">{t.remoteDocs}</a></div>
       </details>
       {availableOverlays.length > 0 && <details className="live-overlays" data-testid="overlay-section" open>
         <summary><Icon name="eye" />{t.overlays}{settings.overlays.some(name => availableOverlays.includes(name)) && <span className="overlays-on">ON</span>}</summary>
