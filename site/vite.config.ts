@@ -14,7 +14,8 @@ const repository = fromHere('..').replace(/\\/g, '/').replace(/\/$/, '');
 const base = '/mesh-avatar-studio/';
 // External mesh-avatar-element embeds use this path as their default src; keep it stable.
 const avatarFile = 'miko.mavatar';
-const publishedUrl = `https://shinshin86.github.io${base}`;
+const pagesOwner = process.env.GITHUB_REPOSITORY_OWNER || 'khanhlegood12';
+const publishedUrl = `https://${pagesOwner}.github.io${base}`;
 
 function socialImage(): Plugin {
   return {

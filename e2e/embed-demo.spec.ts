@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { samplePresent, sampleSkipReason } from './sample';
 
 const site = `http://127.0.0.1:${process.env.PLAYWRIGHT_SITE_PORT ?? 5174}/mesh-avatar-studio/`;
-const defaultSource = 'https://shinshin86.github.io/mesh-avatar-studio/miko.mavatar';
+const defaultSource = 'https://khanhlegood12.github.io/mesh-avatar-studio/miko.mavatar';
 const outside = new WeakMap<Page, string[]>();
 
 test.beforeEach(async ({ context, page }) => {
@@ -120,7 +120,7 @@ for (const example of ['basic', 'playground']) {
     await page.route('https://cdn.jsdelivr.net/npm/mesh-avatar-element@0/dist/standalone.js', route => route.fulfill({
       contentType: 'text/javascript', headers: { 'access-control-allow-origin': '*' }, body: bundle,
     }));
-    await page.route('https://shinshin86.github.io/mesh-avatar-studio/miko.mavatar', route => route.fulfill({
+    await page.route('https://khanhlegood12.github.io/mesh-avatar-studio/miko.mavatar', route => route.fulfill({
       contentType: 'application/octet-stream', headers: { 'access-control-allow-origin': '*' }, body: archive,
     }));
     // Local file navigation is the feature under test, so it bypasses the HTTP-only guard.

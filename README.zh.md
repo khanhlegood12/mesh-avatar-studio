@@ -4,9 +4,9 @@
 
 让一张插画变成会动的 2D 网格虚拟形象：它会眨眼、说话、转头、呼吸、头发自然摆动。虚拟形象由编程助手根据你的插画生成，之后你在本地编辑器里配合实时预览微调动作。
 
-在[项目主页](https://shinshin86.github.io/mesh-avatar-studio/)可以看到动起来的效果。
+在[项目主页](https://khanhlegood12.github.io/mesh-avatar-studio/)可以看到动起来的效果。
 不想安装任何东西、直接用自己的脸和声音驱动它，可以用 Chrome 或 Edge 打开
-[Player](https://shinshin86.github.io/mesh-avatar-studio/play/)。
+[Player](https://khanhlegood12.github.io/mesh-avatar-studio/play/)。
 
 ![打开 Miko 示例的编辑器](docs/images/en/01-overview.png)
 
@@ -133,7 +133,7 @@ npm run create -- --random --prompt "银色短发，校服"
 
 ### 免安装使用
 
-[Player](https://shinshin86.github.io/mesh-avatar-studio/play/) 完全在浏览器内运行面部追踪、麦克风口型同步、表情和光照。打开示例或你自己的 `.mavatar` 文件即可，不会上传任何内容。它没有直播地址：选择**打开虚拟形象窗口**（Chrome 或 Edge），在 OBS 里用**窗口采集**配合绿色背景和色度键滤镜添加该窗口。透明背景、OBS 浏览器来源和从其他应用切换表情需要使用 Studio 的直播页面。
+[Player](https://khanhlegood12.github.io/mesh-avatar-studio/play/) 完全在浏览器内运行面部追踪、麦克风口型同步、表情和光照。打开示例或你自己的 `.mavatar` 文件即可，不会上传任何内容。它没有直播地址：选择**打开虚拟形象窗口**（Chrome 或 Edge），在 OBS 里用**窗口采集**配合绿色背景和色度键滤镜添加该窗口。透明背景、OBS 浏览器来源和从其他应用切换表情需要使用 Studio 的直播页面。
 
 ## 实验性原生运行时
 

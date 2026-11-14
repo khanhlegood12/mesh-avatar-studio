@@ -18,7 +18,7 @@ const MAX_BYTES = 128 * 1024 * 1024;
 const SAMPLE_URL = `${import.meta.env.BASE_URL}miko.mavatar`;
 const WORKER_URL = `${import.meta.env.BASE_URL}mediapipe/tracking-worker.js`;
 const MIKO_TERMS = 'https://miko.aituberonair.com/#terms';
-const STUDIO_URL = 'https://github.com/shinshin86/mesh-avatar-studio';
+const STUDIO_URL = 'https://github.com/khanhlegood12/mesh-avatar-studio';
 
 type Source = { kind: 'sample' } | { kind: 'file'; file: File };
 type ViewState = 'loading' | 'ready';

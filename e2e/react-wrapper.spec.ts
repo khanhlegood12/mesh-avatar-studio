@@ -3,7 +3,7 @@ import { samplePresent, sampleSkipReason } from './sample';
 import type { MeshAvatarElement, MeshAvatarProps } from '../packages/react/src/index';
 
 const sample = `http://127.0.0.1:${process.env.PLAYWRIGHT_SITE_PORT ?? 5174}/mesh-avatar-studio/miko.mavatar`;
-const defaultSrc = 'https://shinshin86.github.io/mesh-avatar-studio/miko.mavatar';
+const defaultSrc = 'https://khanhlegood12.github.io/mesh-avatar-studio/miko.mavatar';
 type Harness = { ref: { current: MeshAvatarElement | null }; log: { version: number; event: string; value: unknown }[];
   reactVersion: string; update: (props: MeshAvatarProps) => void; unmount: () => void };
 declare global { interface Window { harness: Harness } }

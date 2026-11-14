@@ -4,8 +4,8 @@
 
 1枚のイラストから、まばたき・口パク・首振り・呼吸・髪の揺れをする 2D メッシュアバターを作るツールです。アバターの作成はコーディングエージェントが行い、細かい調整はプレビューを見ながらローカルのエディタで行います。
 
-実際に動く様子は[紹介ページ](https://shinshin86.github.io/mesh-avatar-studio/ja/)で見られます。
-インストールせずに自分の顔と声で動かすなら、Chrome か Edge で [Player](https://shinshin86.github.io/mesh-avatar-studio/ja/play/) を開いてください。
+実際に動く様子は[紹介ページ](https://khanhlegood12.github.io/mesh-avatar-studio/ja/)で見られます。
+インストールせずに自分の顔と声で動かすなら、Chrome か Edge で [Player](https://khanhlegood12.github.io/mesh-avatar-studio/ja/play/) を開いてください。
 
 ![ミコのサンプルを開いたエディタ](docs/images/ja/01-overview.png)
 
@@ -136,7 +136,7 @@ npm run create -- --random --prompt "銀髪のショートヘア、制服"
 
 ### インストールせずに使う
 
-[Player](https://shinshin86.github.io/mesh-avatar-studio/ja/play/) では、顔の追従、マイクでの口パク、表情、ライティングをすべてブラウザ内で動かせます。サンプルか自分の `.mavatar` ファイルを開いて使い、ファイルはアップロードされません。OBS用URLはないため、「アバターウィンドウを開く」(Chrome か Edge)を押し、そのウィンドウを緑の背景にして OBS の「ウィンドウキャプチャ」で取り込み、クロマキーで抜いてください。透明な背景、OBS の「ブラウザ」ソース、他のアプリからの表情の切り替えを使うときは、Studio の配信画面を使います。
+[Player](https://khanhlegood12.github.io/mesh-avatar-studio/ja/play/) では、顔の追従、マイクでの口パク、表情、ライティングをすべてブラウザ内で動かせます。サンプルか自分の `.mavatar` ファイルを開いて使い、ファイルはアップロードされません。OBS用URLはないため、「アバターウィンドウを開く」(Chrome か Edge)を押し、そのウィンドウを緑の背景にして OBS の「ウィンドウキャプチャ」で取り込み、クロマキーで抜いてください。透明な背景、OBS の「ブラウザ」ソース、他のアプリからの表情の切り替えを使うときは、Studio の配信画面を使います。
 
 ## 実験的なネイティブ版
 
