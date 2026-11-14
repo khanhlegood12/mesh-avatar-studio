@@ -16,7 +16,7 @@ export const uiZh = {
   drawnVariants: '含眼睛／嘴型差分', readOnly: '只读', copyPath: '复制路径', copyFolderPath: '复制文件夹路径', copied: '路径已复制',
   showFinder: '在访达中显示', showFolder: '打开文件夹', unknownPath: '通过浏览器选择的项目 · 无法获取完整路径',
   savedTo: '已保存到', saveError: '项目保存失败。编辑内容仍保留在页面中，请重试。', revealError: '无法打开项目文件夹。', copyError: '无法复制路径。',
-  help: '使用帮助', close: '关闭帮助', language: '界面语言', english: 'English', japanese: '日本語', chinese: '简体中文', enCode: 'EN', jaCode: 'JA', zhCode: '中文',
+  help: '使用帮助', close: '关闭帮助', language: '界面语言', english: 'English', japanese: '日本語', chinese: '简体中文', vietnamese: 'Tiếng Việt', enCode: 'EN', jaCode: 'JA', zhCode: '中文', viCode: 'VI',
   parts: '部件', faceSection: '面部', hairSection: '头发与饰品', bodySection: '身体', advanced: '高级设置',
   fullBodySupport: '全身支持情况（实验性）', supportSet: '已设置', supportNotSet: '未设置', supportHint: '未设置的部位保持默认动作。', supportLegs: '双腿', supportArms: '手臂', supportCloth: '衣物',
   armSwingL: '图像左臂摆动', armSwingR: '图像右臂摆动', elbowBendL: '图像左肘弯曲', elbowBendR: '图像右肘弯曲',

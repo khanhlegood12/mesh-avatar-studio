@@ -1,6 +1,6 @@
 # Mesh Avatar Studio
 
-[English](README.md) · [日本語](README.ja.md)
+[English](README.md) · [日本語](README.ja.md) · [Tiếng Việt](README.vi.md)
 
 让一张插画变成会动的 2D 网格虚拟形象：它会眨眼、说话、转头、呼吸、头发自然摆动。虚拟形象由编程助手根据你的插画生成，之后你在本地编辑器里配合实时预览微调动作。
 

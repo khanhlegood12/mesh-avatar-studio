@@ -15,11 +15,13 @@ import liveImageJa from '../../docs/images/ja/07-live.png';
 import streamImageJa from '../../docs/images/ja/08-stream.png';
 import './style.css';
 
+const englishScreenshots = {
+  overview: overviewImage, handles: handlesImage, lipSync: lipSyncImage,
+  variants: variantsImage, live: liveImage, stream: streamImage,
+};
 const screenshots: Record<string, string> = {
-  en: {
-    overview: overviewImage, handles: handlesImage, lipSync: lipSyncImage,
-    variants: variantsImage, live: liveImage, stream: streamImage,
-  },
+  en: englishScreenshots,
+  vi: englishScreenshots,
   ja: {
     overview: overviewImageJa, handles: handlesImageJa, lipSync: lipSyncImageJa,
     variants: variantsImageJa, live: liveImageJa, stream: streamImageJa,

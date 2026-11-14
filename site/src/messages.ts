@@ -16,7 +16,7 @@ interface Messages {
   copyFailed: string;
 }
 
-const messages: Record<'en' | 'ja', Messages> = {
+const messages: Record<'en' | 'ja' | 'vi', Messages> = {
   en: {
     expressions: {
       neutral: 'Neutral', smile: 'Smile', shy: 'Shy', surprise: 'Surprise',
@@ -53,7 +53,26 @@ const messages: Record<'en' | 'ja', Messages> = {
     copySucceeded: 'クリップボードにコピーしました。',
     copyFailed: 'コピーできませんでした。コードを選択したので、ブラウザのコピー操作を使ってください。',
   },
+  vi: {
+    expressions: {
+      neutral: 'Bình thường', smile: 'Cười', shy: 'Ngại ngùng', surprise: 'Ngạc nhiên',
+      halfLidded: 'Nửa nhắm mắt', angry: 'Tức giận', sad: 'Buồn', wink: 'Nháy mắt',
+    },
+    mouthStyle: 'Kiểu chuyển động miệng',
+    mouthStyleHint: 'Chọn một kiểu rồi chạy văn bản bên dưới để so sánh.',
+    customMouthStyle: 'Tùy chỉnh',
+    mouthStyles: { calm: 'Nhẹ nhàng', default: 'Tiêu chuẩn', lively: 'Nhanh gọn', subtle: 'Tinh tế', big: 'Biểu cảm' },
+    pointerHint: 'Di chuyển con trỏ chuột và nhân vật sẽ quay mặt nhìn theo.',
+    expressionHint: 'Chọn một biểu cảm để dùng thử.',
+    loading: 'Đang tải bản xem trước trực tiếp…',
+    loadFailed: 'Không thể tải bản xem trước trực tiếp. Hãy thử tải lại bằng trình duyệt có bật WebGL. Bạn vẫn có thể xem dự án trên GitHub hoặc npm.',
+    copy: 'Sao chép',
+    copied: 'Đã sao chép',
+    copySucceeded: 'Đã sao chép vào bộ nhớ tạm.',
+    copyFailed: 'Không thể tự động sao chép. Đoạn mã đã được chọn; hãy dùng lệnh sao chép của trình duyệt.',
+  },
 };
 
-export const language = document.documentElement.lang.split('-')[0] === 'ja' ? 'ja' : 'en';
+const documentLanguage = document.documentElement.lang.split('-')[0];
+export const language: 'en' | 'ja' | 'vi' = documentLanguage === 'ja' || documentLanguage === 'vi' ? documentLanguage : 'en';
 export const copy = messages[language];

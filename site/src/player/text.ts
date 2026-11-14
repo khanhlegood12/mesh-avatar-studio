@@ -1,9 +1,9 @@
-export type PlayerLanguage = 'en' | 'ja';
+export type PlayerLanguage = 'en' | 'ja' | 'vi';
 
 const en = {
   title: 'Player',
   home: 'Mesh Avatar Studio home',
-  otherLanguage: '日本語',
+  languages: 'Languages',
   intro: 'Move a mesh avatar with your face and voice, right in this browser. Nothing to install.',
   avatar: 'Avatar',
   sample: 'Miko (sample)',
@@ -40,7 +40,7 @@ const en = {
 const ja: typeof en = {
   title: 'Player',
   home: 'Mesh Avatar Studio のトップへ',
-  otherLanguage: 'English',
+  languages: '言語',
   intro: 'メッシュアバターを、顔と声でこのブラウザ上ですぐに動かせます。インストールは不要です。',
   avatar: 'アバター',
   sample: 'ミコ(サンプル)',
@@ -74,4 +74,41 @@ const ja: typeof en = {
   expressionHint: 'この画面かアバターウィンドウを操作している間は、キー1〜8で表情を切り替えられます。通常に戻すときはキー1を押します。',
 };
 
-export const playerText = { en, ja };
+const vi: typeof en = {
+  title: 'Player',
+  home: 'Trang chủ Mesh Avatar Studio',
+  languages: 'Ngôn ngữ',
+  intro: 'Điều khiển mesh avatar bằng khuôn mặt và giọng nói ngay trong trình duyệt này. Không cần cài đặt.',
+  avatar: 'Avatar',
+  sample: 'Miko (mẫu)',
+  open: 'Mở tệp .mavatar',
+  useSample: 'Dùng nhân vật mẫu',
+  dropHint: 'Hoặc kéo thả tệp .mavatar vào bất kỳ đâu trên trang này.',
+  makeOwn: 'Tự tạo avatar của riêng bạn với Mesh Avatar Studio',
+  loading: 'Đang tải avatar…',
+  ready: 'Avatar đã sẵn sàng',
+  loadError: 'Không thể mở tệp này. Hãy chọn tệp .mavatar được xuất từ Mesh Avatar Studio.',
+  tooLarge: 'Tệp này lớn hơn 128 MiB.',
+  dropHere: 'Thả tệp .mavatar để mở',
+  background: 'Nền',
+  none: 'Không (chỉ xem trước)',
+  bgHintNone: 'Chế độ ghi cửa sổ không giữ được nền trong suốt. Để dùng trong OBS, hãy chọn màu xanh lá hoặc xanh dương.',
+  bgHintChroma: 'Trong OBS, thêm bộ lọc Chroma Key cho nguồn ghi với cùng màu nền.',
+  bgHintCustom: 'Trong OBS, thêm bộ lọc Color Key cho nguồn ghi với đúng màu này.',
+  show: 'Hiển thị trong OBS',
+  showHelp: 'Mở avatar trong cửa sổ riêng rồi thêm cửa sổ đó vào OBS bằng Window Capture (trên macOS, dùng macOS Screen Capture ở chế độ cửa sổ).',
+  popOut: 'Mở cửa sổ avatar',
+  popIn: 'Đóng cửa sổ avatar',
+  popped: 'Avatar đang hiển thị trong cửa sổ riêng.',
+  popOutUnsupported: 'Cửa sổ avatar cần Chrome hoặc Edge. Hãy dùng “Chỉ hiển thị avatar trong cửa sổ này”.',
+  fullWindow: 'Chỉ hiển thị avatar trong cửa sổ này',
+  exitFullWindow: 'Nhấn Esc hoặc nhấp chuột để hiện lại bảng điều khiển.',
+  keepVisible: 'Giữ cửa sổ avatar luôn hiển thị. Trình duyệt sẽ tạm dừng vẽ khi cửa sổ bị thu nhỏ hoặc bị che khuất hoàn toàn.',
+  privacy: 'Mọi thứ đều chạy ngay trong trình duyệt này. Tệp avatar, hình ảnh camera và âm thanh micro không hề bị tải lên.',
+  credit: 'Miko © Yuki Shindo (AITuber OnAir).',
+  terms: 'Hướng dẫn sử dụng nhân vật',
+  presetHint: 'Bấm Lưu để lưu ánh sáng hiện tại vào ô đó. Khi trang này hoặc cửa sổ avatar đang được chọn, nhấn Shift+1–8 để áp dụng thiết lập sẵn.',
+  expressionHint: 'Khi trang này hoặc cửa sổ avatar đang được chọn, nhấn phím 1–8 để đổi biểu cảm. Phím 1 đưa về bình thường.',
+};
+
+export const playerText = { en, ja, vi };

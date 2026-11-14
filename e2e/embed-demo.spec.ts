@@ -25,12 +25,16 @@ test.beforeEach(async ({ context, page }) => {
 });
 test.afterEach(({ page }) => { expect(outside.get(page) ?? []).toEqual([]); });
 
-async function checkMouthStyles(page: Page, language = 'en') {
-  const selector = page.getByRole('combobox', { name: language === 'ja' ? '口の動きのタイプ' : 'Mouth style', exact: true });
+async function checkMouthStyles(page: Page, language: 'en' | 'ja' | 'vi' = 'en') {
+  const selectorName = { en: 'Mouth style', ja: '口の動きのタイプ', vi: 'Kiểu chuyển động miệng' }[language];
+  const optionLabels = {
+    en: ['Relaxed', 'Standard', 'Snappy', 'Subtle', 'Expressive'],
+    ja: ['ゆったり', '標準', 'キビキビ', '控えめ', 'はっきり'],
+    vi: ['Nhẹ nhàng', 'Tiêu chuẩn', 'Nhanh gọn', 'Tinh tế', 'Biểu cảm'],
+  }[language];
+  const selector = page.getByRole('combobox', { name: selectorName, exact: true });
   await expect(selector).toHaveValue('default');
-  await expect(selector.locator('option:not([disabled])')).toHaveText(language === 'ja'
-    ? ['ゆったり', '標準', 'キビキビ', '控えめ', 'はっきり']
-    : ['Relaxed', 'Standard', 'Snappy', 'Subtle', 'Expressive']);
+  await expect(selector.locator('option:not([disabled])')).toHaveText(optionLabels);
   expect(await page.evaluate(() => document.querySelector('mesh-avatar')!.lipSync)).toEqual({});
   const styles = {
     calm: { granularity: 0, openness: 0.5, closeSpeed: 0 },
@@ -57,11 +61,11 @@ async function checkMouthStyles(page: Page, language = 'en') {
   }
 }
 
-for (const language of ['en', 'ja']) {
+for (const language of ['en', 'ja', 'vi'] as const) {
   test(`embed demo works in ${language} without outside requests`, async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
-    await page.goto(`${site}${language === 'ja' ? 'ja/' : ''}embed/`);
+    await page.goto(`${site}${language === 'en' ? '' : `${language}/`}embed/`);
     await expect(page.locator('#status')).toHaveAttribute('data-state', 'ready');
     await expect(page.locator('html')).toHaveAttribute('lang', language);
     await checkMouthStyles(page, language);
@@ -107,7 +111,14 @@ for (const language of ['en', 'ja']) {
     await expect(page.locator('#status')).toHaveAttribute('data-state', 'error');
     await page.locator('#restore-miko').click();
     await expect(page.locator('#status')).toHaveAttribute('data-state', 'ready');
-    await expect(page.locator('.language-switch')).toHaveAttribute('href', language === 'ja' ? '../../embed/' : '../ja/embed/');
+    const expectedLinks = {
+      en: { ja: '../ja/embed/', vi: '../vi/embed/' },
+      ja: { en: '../../embed/', vi: '../../vi/embed/' },
+      vi: { en: '../../embed/', ja: '../../ja/embed/' },
+    }[language];
+    for (const [target, href] of Object.entries(expectedLinks)) {
+      await expect(page.locator(`.language-switch[lang="${target}"]`)).toHaveAttribute('href', href);
+    }
     expect(errors).toEqual([]);
   });
 }

@@ -140,5 +140,14 @@ test('Japanese player page uses Japanese text and links back to the English page
   await page.goto(`${site}ja/play/`);
   await expect(page.getByTestId('player-status')).toContainText('アバターの準備ができました');
   await expect(page.getByRole('link', { name: 'English' })).toHaveAttribute('href', '../../play/');
+  await expect(page.getByRole('link', { name: 'Tiếng Việt' })).toHaveAttribute('href', '../../vi/play/');
   expect(await readFile(new URL('../site/ja/play/index.html', import.meta.url), 'utf8')).toContain('lang="ja"');
+});
+
+test('Vietnamese player page uses Vietnamese text and links to English and Japanese pages', async ({ page }) => {
+  await page.goto(`${site}vi/play/`);
+  await expect(page.getByTestId('player-status')).toContainText('Avatar đã sẵn sàng');
+  await expect(page.getByRole('link', { name: 'English' })).toHaveAttribute('href', '../../play/');
+  await expect(page.getByRole('link', { name: '日本語' })).toHaveAttribute('href', '../../ja/play/');
+  expect(await readFile(new URL('../site/vi/play/index.html', import.meta.url), 'utf8')).toContain('lang="vi"');
 });

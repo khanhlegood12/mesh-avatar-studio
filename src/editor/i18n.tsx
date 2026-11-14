@@ -2,9 +2,10 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import { readPreference, savePreference } from './preferences';
 import { workflowEn, workflowJa } from './workflow-i18n';
 import { uiZh, workflowZh, partsZh, fieldsZh } from './i18n-zh';
+import { uiVi, workflowVi, partsVi, fieldsVi } from './i18n-vi';
 export { readPreference, savePreference } from './preferences';
 
-export type Language = 'en' | 'ja' | 'zh';
+export type Language = 'en' | 'ja' | 'zh' | 'vi';
 export const LANGUAGE_KEY = 'mesh-avatar-language';
 export const GUIDE_KEY = 'mesh-avatar-guide-seen';
 
@@ -24,7 +25,7 @@ const en = {
   drawnVariants: 'Drawn eyes/mouths', readOnly: 'Read-only', copyPath: 'Copy path', copyFolderPath: 'Copy folder path', copied: 'Path copied',
   showFinder: 'Show in Finder', showFolder: 'Open folder', unknownPath: 'Browser-picked project · full path unavailable',
   savedTo: 'Saved to', saveError: 'Could not save the project. Your edits are still in the editor; try again.', revealError: 'Could not open the project folder.', copyError: 'Could not copy the path.',
-  help: 'Help', close: 'Close help', language: 'Language', english: 'English', japanese: '日本語', chinese: '简体中文', enCode: 'EN', jaCode: 'JA', zhCode: '中文',
+  help: 'Help', close: 'Close help', language: 'Language', english: 'English', japanese: '日本語', chinese: '简体中文', vietnamese: 'Tiếng Việt', enCode: 'EN', jaCode: 'JA', zhCode: '中文', viCode: 'VI',
   parts: 'Parts', faceSection: 'Face', hairSection: 'Hair & accessories', bodySection: 'Body', advanced: 'Advanced',
   fullBodySupport: 'Full-body support (experimental)', supportSet: 'Set', supportNotSet: 'Not set', supportHint: 'Parts not set keep the standard motion.', supportLegs: 'Legs', supportArms: 'Arms', supportCloth: 'Cloth',
   armSwingL: 'Image-left arm swing', armSwingR: 'Image-right arm swing', elbowBendL: 'Image-left elbow bend', elbowBendR: 'Image-right elbow bend',
@@ -74,7 +75,7 @@ const ja: typeof en = {
   drawnVariants: '目・口の差分画像あり', readOnly: '読み取り専用', copyPath: 'パスをコピー', copyFolderPath: 'フォルダのパスをコピー', copied: 'パスをコピーしました',
   showFinder: 'フォルダを開く', showFolder: 'フォルダを開く', unknownPath: 'ブラウザで選択 · フルパスは取得できません',
   savedTo: '保存しました:', saveError: 'プロジェクトを保存できませんでした。編集内容は画面に残っています。もう一度お試しください。', revealError: 'プロジェクトのフォルダを開けませんでした。', copyError: 'パスをコピーできませんでした。',
-  help: 'ヘルプ', close: 'ヘルプを閉じる', language: '言語', english: '英語', japanese: '日本語', chinese: '简体中文', enCode: '英語', jaCode: '日本語', zhCode: '中文',
+  help: 'ヘルプ', close: 'ヘルプを閉じる', language: '言語', english: '英語', japanese: '日本語', chinese: '简体中文', vietnamese: 'Tiếng Việt', enCode: '英語', jaCode: '日本語', zhCode: '中文', viCode: 'VI',
   parts: 'パーツ', faceSection: '顔', hairSection: '髪・飾り', bodySection: '体', advanced: '詳細設定',
   fullBodySupport: '全身の対応状況(実験的)', supportSet: '設定済み', supportNotSet: '未設定', supportHint: '未設定の部位は通常の動きのままです。', supportLegs: '脚', supportArms: '腕', supportCloth: '布',
   armSwingL: '画像左の腕の振り', armSwingR: '画像右の腕の振り', elbowBendL: '画像左の肘の曲げ', elbowBendR: '画像右の肘の曲げ',
@@ -109,10 +110,12 @@ const ja: typeof en = {
   accessory: '飾り', x: '横', y: '縦', px: '画素',
 };
 const zh: typeof en = { ...workflowZh, ...uiZh };
-export const dictionaries = { en, ja, zh };
+const vi: typeof en = { ...workflowVi, ...uiVi };
+export const dictionaries = { en, ja, zh, vi };
 export type PartGroup = 'head' | 'eyes' | 'mouth' | 'face' | 'cheeks' | 'strands' | 'buns' | 'accessories' | 'body' | 'hand' | 'legs' | 'arms' | 'cloth' | 'mesh' | 'view';
 const partText: Record<Language, Record<PartGroup, [string, string, string]>> = {
   zh: partsZh,
+  vi: partsVi,
   en: {
     arms: ['Arms', 'Small motions of hanging arms.', 'Use only when a transparent gap separates the arms from the body. Place image-left/right shoulder, elbow and wrist joints and trace each boundary in the gap.'],
     legs: ['Legs', 'Planted feet and weight transfer.', 'Place the pelvis and image-left/right hip, knee and ankle joints. Trace the split between the legs, then test both weight-shift directions.'],
@@ -187,6 +190,7 @@ const armFieldText: Record<Language, Record<string, string>> = {
   en: { left: 'Image-left arm', right: 'Image-right arm', shoulder: 'Shoulder', split: 'Arm boundary', swing: 'Upper-arm swing limit (degrees)', bend: 'Elbow bend limit (degrees)', inward: 'Inward swing fraction' },
   ja: { left: '画像左の腕', right: '画像右の腕', shoulder: '肩', split: '腕の境界線', swing: '上腕の振りの上限 (度)', bend: '肘の曲げの上限 (度)', inward: '内側に振れる割合' },
   zh: { left: '图像左臂', right: '图像右臂', shoulder: '肩关节', split: '手臂分界线', swing: '上臂摆动上限 (度)', bend: '手肘弯曲上限 (度)', inward: '向内摆动比例' },
+  vi: { left: 'Tay trái (theo ảnh)', right: 'Tay phải (theo ảnh)', shoulder: 'Vai', split: 'Đường ranh giới tay', swing: 'Giới hạn vung cánh tay trên (độ)', bend: 'Giới hạn gập khuỷu (độ)', inward: 'Tỉ lệ vung vào trong' },
 };
 export function fieldTitle(path: string, language: Language) {
   const t = dictionaries[language];
@@ -200,21 +204,23 @@ export function fieldTitle(path: string, language: Language) {
       if (key in parts) return parts[key as PartGroup][0];
     }
     if (path.startsWith('arms.') && armFieldText[language][key]) return armFieldText[language][key];
-    if (key === 'split' && path.startsWith('legs.')) return { en: 'Leg boundary', ja: '脚の境界線', zh: '双腿分界线' }[language];
-    return language === 'zh' ? fieldsZh[key] ?? key : fieldText[key]?.[language === 'en' ? 0 : 1] ?? key;
+    if (key === 'split' && path.startsWith('legs.')) return { en: 'Leg boundary', ja: '脚の境界線', zh: '双腿分界线', vi: 'Đường phân tách hai chân' }[language];
+    if (language === 'zh') return fieldsZh[key] ?? key;
+    if (language === 'vi') return fieldsVi[key] ?? key;
+    return fieldText[key]?.[language === 'en' ? 0 : 1] ?? key;
   }).join(' · ');
 }
 const Context = createContext({ language: 'en' as Language, setLanguage: (_: Language) => { void _; } });
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>(() => {
     const saved = readPreference(LANGUAGE_KEY);
-    return saved === 'ja' || saved === 'zh' ? saved : 'en';
+    return saved === 'ja' || saved === 'zh' || saved === 'vi' ? saved : 'en';
   });
   useEffect(() => { document.documentElement.lang = language === 'zh' ? 'zh-CN' : language; savePreference(LANGUAGE_KEY, language); }, [language]);
   return <Context.Provider value={{ language, setLanguage }}>{children}</Context.Provider>;
 }
 export function useI18n() {
   const context = useContext(Context);
-  return { ...context, t: dictionaries[context.language], parts: partText[context.language], locale: { en: 'en-GB', ja: 'ja-JP', zh: 'zh-CN' }[context.language],
+  return { ...context, t: dictionaries[context.language], parts: partText[context.language], locale: { en: 'en-GB', ja: 'ja-JP', zh: 'zh-CN', vi: 'vi-VN' }[context.language],
     title: (path: string) => fieldTitle(path, context.language) };
 }

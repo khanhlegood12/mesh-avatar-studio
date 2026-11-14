@@ -2,14 +2,16 @@ import { expect, test, vi } from 'vitest';
 import fixture from '../samples/miko-qipao/rig.json';
 import { jobReason } from '../src/editor/job-reason';
 import { workflowEn, workflowJa } from '../src/editor/workflow-i18n';
+import { workflowVi } from '../src/editor/i18n-vi';
 import { runProjectJob, type LocalProject } from '../src/editor/project';
 import { parseRig } from 'mesh-avatar';
 
 test('tool geometry failures name the part and correction in each language, ignoring successful rounding logs', () => {
-  const rig = parseRig(fixture), en = { ...workflowEn, accessory: 'Accessory' }, ja = { ...workflowJa, accessory: '飾り' };
+  const rig = parseRig(fixture), en = { ...workflowEn, accessory: 'Accessory' }, ja = { ...workflowJa, accessory: '飾り' }, vi = { ...workflowVi, accessory: 'Phụ kiện' };
   const outside = 'Invalid rig: rig.accessories[1].box: rectangle must stay inside the image';
   expect(jobReason(outside, en, rig)).toContain('Accessory 2 (tassel_r)');
   expect(jobReason(outside, ja, rig)).toContain('飾り 2 (tassel_r) の切り抜き範囲が画像の外');
+  expect(jobReason(outside, vi, rig)).toContain('Phụ kiện 2 (tassel_r)');
   expect(jobReason('build-layers: accessories[1].box must be an integer rectangle inside the image', ja, rig)).toContain('4つの整数座標');
   expect(jobReason('build-layers: accessories[1].box has no area inside the image', ja, rig)).toContain('幅や高さがありません');
   expect(jobReason('accessories[1].box rounded outward and clipped: [1,2,3.4,5] -> [1,2,4,5]', ja, rig)).toBeUndefined();

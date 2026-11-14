@@ -187,13 +187,19 @@ export function PlayerApp({ language }: { language: PlayerLanguage }) {
   const cameraActive = cameraState === 'starting' || cameraState === 'running';
   const status = cameraState === 'running' ? tracking ? 'tracking' : 'lost' : cameraState;
   const sourceName = source.kind === 'sample' ? t.sample : source.file.name;
-  const otherLanguage = language === 'ja' ? '../../play/' : '../ja/play/';
+  const languageLinks: Record<PlayerLanguage, { lang: PlayerLanguage; label: string; href: string }[]> = {
+    en: [{ lang: 'ja', label: '日本語', href: '../ja/play/' }, { lang: 'vi', label: 'Tiếng Việt', href: '../vi/play/' }],
+    ja: [{ lang: 'en', label: 'English', href: '../../play/' }, { lang: 'vi', label: 'Tiếng Việt', href: '../../vi/play/' }],
+    vi: [{ lang: 'en', label: 'English', href: '../../play/' }, { lang: 'ja', label: '日本語', href: '../../ja/play/' }],
+  };
   const canPopOut = !!pictureInPicture();
   const stageBackground = { backgroundColor: background, backgroundImage: background === 'transparent' ? undefined : 'none' };
 
   return <main className={`live-app player-app${fullWindow ? ' player-full' : ''}`} onDragEnter={onDrag} onDragOver={onDrag} onDragLeave={onDrag} onDrop={onDrop}>
     <header className="live-header"><div><a href="../" aria-label={t.home}>Mesh Avatar Studio</a><h1>Mesh Avatar <span>{t.title}</span></h1></div>
-      <a className="player-language" href={otherLanguage} lang={language === 'ja' ? 'en' : 'ja'}>{t.otherLanguage}</a>
+      <nav className="player-languages" aria-label={t.languages}>{languageLinks[language].map(item =>
+        <a key={item.lang} className="player-language" href={item.href} lang={item.lang} hrefLang={item.lang}>{item.label}</a>)}
+      </nav>
     </header>
     <p className="player-intro">{t.intro}</p>
     <div className="live-layout"><section className="live-view">

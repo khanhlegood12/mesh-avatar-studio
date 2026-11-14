@@ -470,6 +470,7 @@ function Workspace() {
           <button aria-label={t.english} aria-pressed={language === 'en'} onClick={() => setLanguage('en')}>{t.enCode}</button>
           <button aria-label={t.japanese} aria-pressed={language === 'ja'} onClick={() => setLanguage('ja')}>{t.jaCode}</button>
           <button aria-label={t.chinese} aria-pressed={language === 'zh'} onClick={() => setLanguage('zh')}>{t.zhCode}</button>
+          <button aria-label={t.vietnamese} aria-pressed={language === 'vi'} onClick={() => setLanguage('vi')}>{t.viCode}</button>
         </div>
       </nav>
     </header>
