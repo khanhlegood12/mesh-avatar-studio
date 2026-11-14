@@ -38,6 +38,14 @@ export const lipSyncText = {
     file: '预览本地音频文件', noFile: '未选择音频', stop: '停止音频预览',
     hint: '保存或导出时，设置将包含在虚拟形象中。所选音频仅在此浏览器中播放。', error: '无法播放此音频文件。',
   },
+  vi: {
+    movementTitle: 'Kiểu chuyển động miệng', calm: 'Nhẹ nhàng', default: 'Tiêu chuẩn', lively: 'Nhanh gọn', subtle: 'Tinh tế', big: 'Biểu cảm', custom: 'Tùy chỉnh',
+    demoHint: 'Chọn một kiểu để xem nhân vật nói thử.', granularity: 'Nhịp chuyển động miệng', granularityLow: 'Nhẹ nhàng', granularityHigh: 'Nhanh gọn',
+    openness: 'Độ mở miệng', opennessLow: 'Nhỏ', opennessHigh: 'Lớn', closeSpeed: 'Tốc độ khép miệng', closeSpeedLow: 'Mượt mà', closeSpeedHigh: 'Dứt khoát',
+    advanced: 'Tinh chỉnh', title: 'Khớp khẩu hình bằng âm thanh',
+    file: 'Thử với tệp âm thanh trên máy', noFile: 'Chưa chọn tệp âm thanh', stop: 'Dừng nghe thử',
+    hint: 'Cài đặt được lưu kèm vào avatar khi lưu hoặc xuất. Tệp âm thanh đã chọn chỉ phát trong trình duyệt này.', error: 'Không thể phát tệp âm thanh này.',
+  },
 };
 
 export function LipSyncSettings({ value, onChange, avatar, onPreview, onDemo }: {

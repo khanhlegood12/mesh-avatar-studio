@@ -40,4 +40,18 @@ const zh: typeof en = {
   playbackOnly: '缺少原图：仅支持播放，无法编辑或重新生成图层。',
   playbackBadge: '仅播放', imported: '已导入：', noSourceHelp: '即使不包含原图，文件仍保留图层图像。',
 };
-export const archiveText = { en, ja, zh };
+const vi: typeof en = {
+  exportTitle: 'Xuất .mavatar', exportButton: 'Tải xuống .mavatar', saveExport: 'Lưu và xuất',
+  includeSource: 'Bao gồm ảnh gốc', sourceHelp: 'Kèm hình minh họa gốc để chỉnh sửa lại avatar này trong Studio sau này.',
+  savedHelp: 'Xuất tệp rig đã lưu, các lớp đã dựng và ảnh biểu cảm vẽ riêng.',
+  originalHelp: 'Xuất các tệp gốc. Các chỉnh sửa trong chế độ chỉ đọc này sẽ không được bao gồm.',
+  saveHelp: 'Chỉnh sửa hiện tại sẽ được lưu trước khi xuất.',
+  rebuildHelp: 'Đường viền đã thay đổi. Hãy dựng lại lớp trước khi xuất chỉnh sửa của bạn.',
+  exportUnavailable: 'Cần máy chủ phát triển cục bộ hoặc thư mục mở từ trình duyệt để xuất.',
+  importTitle: 'Nhập .mavatar', importHelp: 'Chọn tệp hoặc kéo thả vào đây. Một dự án cục bộ mới sẽ được tạo.',
+  importUnavailable: 'Cần máy chủ phát triển cục bộ (npm run dev) để nhập.',
+  archiveFile: 'Tệp lưu trữ avatar', busy: 'Đang xử lý…', failed: 'Không thể truyền tải avatar.', dismiss: 'Đóng',
+  playbackOnly: 'Thiếu ảnh gốc: chỉ có thể phát. Không thể chỉnh sửa hoặc dựng lại lớp.',
+  playbackBadge: 'Chỉ phát', imported: 'Đã nhập:', noSourceHelp: 'Các ảnh lớp đã dựng vẫn được giữ trong tệp ngay cả khi bỏ qua ảnh gốc.',
+};
+export const archiveText = { en, ja, zh, vi };
