@@ -49,16 +49,51 @@ h1 { margin: 0; font-size: clamp(44px, 4.5vw, 64px); line-height: 1.06; font-wei
 .button.secondary { background: var(--surface); }
 .button.secondary:hover { border-color: var(--accent); color: var(--accent); }
 .hero-note { margin: 16px 0 0; font-size: 13px; color: var(--muted); }
+.hero-qr { display: flex; align-items: center; gap: 16px; margin-top: 22px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: 0 4px 16px #24334808; max-width: 460px; }
+.qr-frame { flex-shrink: 0; width: 112px; height: 112px; padding: 4px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+.qr-frame svg { display: block; width: 100%; height: 100%; }
+.qr-copy { min-width: 0; flex: 1; }
+.qr-title { margin: 0; font-size: 13px; font-weight: 650; color: var(--ink); }
+.qr-hint { margin: 4px 0 8px; font-size: 12px; line-height: 1.5; color: var(--muted); }
+.qr-url-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.qr-url { display: block; max-width: 100%; padding: 4px 7px; border: 1px solid var(--line); border-radius: 6px; background: #f7f9fc; color: var(--muted); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.qr-copy-btn { padding: 5px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.qr-copy-btn:hover { border-color: var(--accent); color: var(--accent); }
 .demo { min-width: 0; margin: 0; }
 .demo-panel { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: hidden; box-shadow: 0 8px 28px #24334808; }
 .demo-heading { display: flex; justify-content: space-between; align-items: center; min-height: 48px; padding: 12px 20px; border-bottom: 1px solid var(--line); font-size: 13px; }
 .demo-title { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
 .demo-title::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 .demo-character { color: var(--muted); }
-.avatar-stage { position: relative; height: 430px; background: #f7f9fc; }
+.avatar-stage { position: relative; height: 430px; background: #f7f9fc; touch-action: pan-y; }
 #avatar { display: block; width: 100%; height: 100%; }
 .avatar-status { position: absolute; inset: 0; display: grid; place-content: center; margin: 0; padding: 32px; background: #f7f9fc; color: var(--muted); font-size: 14px; line-height: 1.7; text-align: center; }
 .demo-controls { padding: 16px 20px; border-top: 1px solid var(--line); }
+.nano-chat { padding: 14px 20px 16px; border-top: 1px solid var(--line); background: #f8fafd; }
+.nano-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.nano-title { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 650; color: var(--ink); }
+.nano-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #e8eef7; color: var(--muted); }
+.nano-badge[data-state='available'] { background: #dcfce7; color: #166534; }
+.nano-badge[data-state='downloadable'], .nano-badge[data-state='downloading'] { background: var(--accent-soft); color: var(--accent); }
+.nano-prompts { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.nano-chip { padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink); font-size: 11px; cursor: pointer; }
+.nano-chip:hover { border-color: var(--accent); color: var(--accent); }
+.nano-form { display: flex; gap: 6px; }
+.nano-form input { flex: 1; min-width: 0; min-height: 38px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; font-size: 13px; }
+.nano-form input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.nano-send { min-height: 38px; padding: 6px 14px; border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: #fff; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.nano-send:hover:not(:disabled) { background: #1d4ed8; }
+.nano-send:disabled { opacity: .55; cursor: default; }
+.nano-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; }
+.nano-action { padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 600; cursor: pointer; }
+.nano-action:hover:not(:disabled), .nano-action[aria-pressed='true'] { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.nano-reply { margin-top: 10px; padding: 10px 12px; border: 1px solid #d4e3fc; border-radius: 10px; background: var(--surface); }
+.nano-reply p { margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink); }
+.nano-reply-meta { margin-top: 4px !important; font-size: 11px !important; color: var(--muted) !important; }
+.nano-guide { margin-top: 8px; font-size: 11px; color: var(--muted); }
+.nano-guide summary { cursor: pointer; color: var(--accent); font-weight: 550; }
+.nano-guide p { margin: 6px 0 0; line-height: 1.6; }
+.nano-guide code { padding: 1px 4px; border-radius: 4px; background: var(--surface); border: 1px solid var(--line); color: var(--ink); font-size: 10.5px; }
 fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
 .expression-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .expression-chips button, .talk-toggle { min-height: 40px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font-size: 12px; font-weight: 550; cursor: pointer; }
@@ -180,9 +215,12 @@ pre:focus-visible { outline: 2px solid #7aa2f7; outline-offset: -4px; }
   .hero-actions { gap: 8px; margin-top: 24px; }
   .button { padding: 12px; font-size: 12px; gap: 8px; }
   .hero-note { font-size: 12px; }
+  .hero-qr { gap: 12px; padding: 12px; }
+  .qr-frame { width: 92px; height: 92px; }
   .avatar-stage { height: clamp(270px, 80vw, 310px); }
   .demo-heading { padding-inline: 16px; }
   .demo-controls { padding: 14px 16px; }
+  .nano-chat { padding: 12px 16px 14px; }
   .expression-chips button { flex: 1; padding-inline: 8px; }
   .content-section { padding-block: 48px; }
   .section-heading { margin-bottom: 24px; }

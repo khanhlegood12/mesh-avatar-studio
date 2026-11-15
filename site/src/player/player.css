@@ -11,6 +11,10 @@
 .player-source { margin: 0 0 12px; font-weight: 600; overflow-wrap: anywhere; }
 .player-show { margin: 12px 0; }
 .player-exit { margin: 0; color: #546a87; font-size: 12px; text-align: center; }
+.player-nano-body { display: grid; gap: 10px; padding: 12px; }
+.player-nano-form { display: flex; gap: 8px; }
+.player-nano-form input { flex: 1; min-width: 0; padding: 6px 10px; border: 1px solid #c6d1df; border-radius: 8px; font: inherit; }
+.player-nano-reply { margin: 0; padding: 8px 10px; border-radius: 8px; background: #eef4fc; color: #1d3658; font-size: 13px; line-height: 1.5; }
 
 /* Avatar only: the stage fills the window for a window capture. */
 .player-full { max-width: none; padding: 0; }

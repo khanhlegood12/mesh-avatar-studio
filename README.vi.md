@@ -6,9 +6,9 @@ Biến một hình minh họa thành avatar 2D chuyển động bằng lưới (
 nói chuyện, quay đầu, thở và đung đưa mái tóc. Tác tử lập trình sẽ chuẩn bị avatar từ ảnh của bạn,
 còn bạn tinh chỉnh trực tiếp trong trình chỉnh sửa cục bộ với khung xem trước thời gian thực.
 
-Xem chuyển động trực tiếp tại [trang giới thiệu](https://khanhlegood12.github.io/mesh-avatar-studio/vi/).
+Xem chuyển động trực tiếp tại [trang giới thiệu](https://khanhlegood12.github.io/mesh-avatar-studio/).
 Để điều khiển nhân vật bằng khuôn mặt và giọng nói mà không cần cài đặt gì, hãy mở
-[Player](https://khanhlegood12.github.io/mesh-avatar-studio/vi/play/) trên Chrome hoặc Edge.
+[Player](https://khanhlegood12.github.io/mesh-avatar-studio/play/) trên Chrome hoặc Edge.
 
 ![Trình chỉnh sửa với nhân vật mẫu Miko](docs/images/en/01-overview.png)
 
@@ -127,7 +127,7 @@ Dùng phím **1**–**8** để đổi biểu cảm và **Shift**+**1**–**8** 
 
 ### Không cần cài đặt
 
-[Player](https://khanhlegood12.github.io/mesh-avatar-studio/vi/play/) chạy theo dõi khuôn mặt,
+[Player](https://khanhlegood12.github.io/mesh-avatar-studio/play/) chạy theo dõi khuôn mặt,
 khớp khẩu hình bằng micro, biểu cảm và ánh sáng hoàn toàn trong trình duyệt. Mở mẫu có sẵn hoặc tệp
 `.mavatar` của bạn; không có dữ liệu nào bị tải lên. Chọn **Mở cửa sổ avatar** (Chrome hoặc Edge),
 đặt nền xanh lá rồi thêm vào OBS bằng **Window Capture** kèm bộ lọc Chroma Key.

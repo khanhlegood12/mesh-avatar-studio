@@ -61,11 +61,11 @@ async function checkMouthStyles(page: Page, language: 'en' | 'ja' | 'vi' = 'en')
   }
 }
 
-for (const language of ['en', 'ja', 'vi'] as const) {
+for (const language of ['vi', 'en', 'ja'] as const) {
   test(`embed demo works in ${language} without outside requests`, async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
-    await page.goto(`${site}${language === 'en' ? '' : `${language}/`}embed/`);
+    await page.goto(`${site}${language === 'vi' ? '' : `${language}/`}embed/`);
     await expect(page.locator('#status')).toHaveAttribute('data-state', 'ready');
     await expect(page.locator('html')).toHaveAttribute('lang', language);
     await checkMouthStyles(page, language);
@@ -82,6 +82,11 @@ for (const language of ['en', 'ja', 'vi'] as const) {
     const box = await page.locator('mesh-avatar').boundingBox();
     expect(box!.width).toBeCloseTo(box!.height);
     await expect(page.locator('#emotion, #paused, #no-idle, #audio-file, #microphone')).toHaveCount(0);
+    if (language === 'vi') {
+      await page.locator('#speech-text').fill('Xin chào, rất vui được gặp bạn!');
+      await page.locator('#speech-form button').click();
+      expect(await page.evaluate(() => document.querySelector('mesh-avatar')!.avatar!.getLipSyncState().active)).toBe(true);
+    }
     await page.locator('#speech-text').fill('こんにちは、よろしくお願いします。');
     await page.locator('#speech-form button').click();
     expect(await page.evaluate(() => document.querySelector('mesh-avatar')!.avatar!.getLipSyncState().active)).toBe(true);
@@ -112,9 +117,9 @@ for (const language of ['en', 'ja', 'vi'] as const) {
     await page.locator('#restore-miko').click();
     await expect(page.locator('#status')).toHaveAttribute('data-state', 'ready');
     const expectedLinks = {
-      en: { ja: '../ja/embed/', vi: '../vi/embed/' },
-      ja: { en: '../../embed/', vi: '../../vi/embed/' },
-      vi: { en: '../../embed/', ja: '../../ja/embed/' },
+      vi: { en: '../en/embed/', ja: '../ja/embed/' },
+      en: { vi: '../../embed/', ja: '../../ja/embed/' },
+      ja: { vi: '../../embed/', en: '../../en/embed/' },
     }[language];
     for (const [target, href] of Object.entries(expectedLinks)) {
       await expect(page.locator(`.language-switch[lang="${target}"]`)).toHaveAttribute('href', href);

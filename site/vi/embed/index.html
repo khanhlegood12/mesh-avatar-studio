@@ -1,125 +1,16 @@
 <!doctype html>
 <html lang="vi">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Security-Policy" content="connect-src 'self' https://khanhlegood12.github.io blob: data: ws://127.0.0.1:* ws://localhost:*; img-src 'self' blob: data:; media-src 'self' blob:; object-src 'none'; base-uri 'self'">
-    <meta name="description" content="Thử biểu cảm, khớp khẩu hình theo văn bản và tệp avatar của riêng bạn. Nếu không đặt src, phần tử sẽ tải Miko từ https://khanhlegood12.github.io/mesh-avatar-studio/miko.mavatar.">
-    <title>Mesh Avatar — Thử nhúng HTML</title>
-    <link rel="canonical" href="https://khanhlegood12.github.io/mesh-avatar-studio/vi/embed/">
-    <link rel="alternate" hreflang="en" href="https://khanhlegood12.github.io/mesh-avatar-studio/embed/">
-    <link rel="alternate" hreflang="ja" href="https://khanhlegood12.github.io/mesh-avatar-studio/ja/embed/">
-    <link rel="alternate" hreflang="vi" href="https://khanhlegood12.github.io/mesh-avatar-studio/vi/embed/">
-    <link rel="alternate" hreflang="x-default" href="https://khanhlegood12.github.io/mesh-avatar-studio/embed/">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <script type="module" src="/src/embed/main.ts"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Đang chuyển hướng — Mesh Avatar Embed</title>
+    <link rel="canonical" href="https://khanhlegood12.github.io/mesh-avatar-studio/embed/" />
+    <meta http-equiv="refresh" content="0; url=../../embed/" />
+    <script>
+      window.location.replace(new URL('../../embed/', window.location.href).href + window.location.search + window.location.hash);
+    </script>
   </head>
-  <body class="embed-page">
-    <header class="site-header shell">
-      <a class="brand" href="../">Mesh Avatar Studio</a>
-      <nav class="primary-nav" aria-label="Điều hướng">
-        <a class="header-link" href="../">Trang chủ</a>
-        <a class="header-link language-switch" href="../../embed/" lang="en">English</a>
-        <a class="header-link language-switch" href="../../ja/embed/" lang="ja">日本語</a>
-      </nav>
-    </header>
-    <main id="embed-playground" class="shell" data-loading="Đang tải avatar…" data-ready="Avatar đã sẵn sàng" data-error="Không thể tải avatar này. Hãy chọn tệp khác hoặc quay lại Miko." data-copy-error="Hãy chọn và sao chép đoạn mã phía trên.">
-      <section class="intro" aria-labelledby="embed-title">
-        <p class="eyebrow">mesh-avatar-element</p>
-        <h1 id="embed-title">Thử nhúng HTML</h1>
-        <p>Thử biểu cảm, khớp khẩu hình theo văn bản và tệp avatar của riêng bạn. Nếu không đặt src, phần tử sẽ tải Miko từ https://khanhlegood12.github.io/mesh-avatar-studio/miko.mavatar.</p>
-        <div class="code-card">
-          <div class="code-heading">
-            <h2>Nhúng lên trang của bạn <span>HTML</span></h2>
-            <button id="copy-snippet" type="button" class="copy-button" data-copied="Đã sao chép">Sao chép</button>
-          </div>
-          <pre tabindex="0"><code id="embed-code">&lt;script type="module" src="https://cdn.jsdelivr.net/npm/mesh-avatar-element@0/dist/standalone.js"&gt;&lt;/script&gt;
-&lt;mesh-avatar&gt;&lt;/mesh-avatar&gt;</code></pre>
-        </div>
-        <a class="text-link" href="https://github.com/khanhlegood12/mesh-avatar-studio/tree/main/packages/element">Xem hướng dẫn gói (tiếng Anh) ↗</a>
-      </section>
-      <div class="embed-layout">
-        <section class="embed-stage" aria-label="Xem trước avatar">
-          <mesh-avatar></mesh-avatar>
-          <p id="source-name">Miko</p>
-          <p id="status" role="status" data-state="loading">Đang tải avatar…</p>
-        </section>
-        <div class="embed-panels">
-          <fieldset id="avatar-controls" disabled>
-            <legend class="sr-only">Điều khiển avatar</legend>
-            <section class="control-panel">
-              <div class="embed-demo-controls">
-                <h2>Biểu cảm</h2>
-              <div class="expression-chips" role="group" aria-label="Biểu cảm">
-                <button type="button" data-expression="neutral" aria-pressed="true">Bình thường</button>
-                <button type="button" data-expression="smile" aria-pressed="false">Cười</button>
-                <button type="button" data-expression="shy" aria-pressed="false">Ngại ngùng</button>
-                <button type="button" data-expression="surprise" aria-pressed="false">Ngạc nhiên</button>
-                <button type="button" data-expression="halfLidded" aria-pressed="false">Nửa nhắm mắt</button>
-                <button type="button" data-expression="angry" aria-pressed="false">Tức giận</button>
-                <button type="button" data-expression="sad" aria-pressed="false">Buồn</button>
-                <button type="button" data-expression="wink" aria-pressed="false">Nháy mắt</button>
-              </div>
-              </div>
-              <div class="code-card">
-                <div class="code-heading"><h3>HTML</h3><button type="button" class="copy-button" data-copy="expression-code" data-copied="Đã sao chép">Sao chép</button></div>
-                <pre tabindex="0"><code id="expression-code">&lt;mesh-avatar&gt;&lt;/mesh-avatar&gt;</code></pre>
-              </div>
-            </section>
-            <section class="control-panel">
-              <div class="embed-demo-controls">
-                <h2 id="mouth-style-label"></h2>
-                <select id="mouth-style" aria-labelledby="mouth-style-label" aria-describedby="mouth-style-hint"></select>
-                <p id="mouth-style-hint" class="hint"></p>
-              </div>
-              <div class="code-card">
-                <div class="code-heading"><h3>JavaScript</h3><button type="button" class="copy-button" data-copy="mouth-style-code" data-copied="Đã sao chép">Sao chép</button></div>
-                <pre tabindex="0"><code id="mouth-style-code"></code></pre>
-              </div>
-            </section>
-            <section class="control-panel">
-              <div class="embed-demo-controls">
-                <h2>Khớp khẩu hình bằng văn bản</h2>
-                <form id="speech-form">
-                  <label for="speech-text">Văn bản tiếng Nhật (Kana)</label>
-                  <input id="speech-text" type="text" value="こんにちは" maxlength="300">
-                  <button type="submit">Chạy khẩu hình</button>
-                </form>
-                <p class="hint">Chỉ mô phỏng chuyển động miệng, không phát âm thanh.</p>
-              </div>
-              <div class="code-card">
-                <div class="code-heading"><h3>JavaScript</h3><button type="button" class="copy-button" data-copy="speech-code" data-copied="Đã sao chép">Sao chép</button></div>
-                <pre tabindex="0"><code id="speech-code">const el = document.querySelector('mesh-avatar');
-el.speak('こんにちは');</code></pre>
-              </div>
-            </section>
-          </fieldset>
-          <section class="control-panel">
-            <div class="embed-demo-controls">
-              <h2>Dùng tệp .mavatar của bạn</h2>
-              <div class="file-actions">
-                <input id="avatar-file" class="file-input" type="file" accept=".mavatar" aria-labelledby="avatar-file-label">
-                <label id="avatar-file-label" class="file-button" for="avatar-file">Chọn tệp .mavatar</label>
-                <button id="restore-miko" type="button">Quay lại Miko</button>
-              </div>
-              <p id="selected-file" class="hint" aria-live="polite">Đang chọn: Miko</p>
-              <p class="hint">Tệp chỉ được đọc ngay trong trình duyệt và không bị tải lên máy chủ.</p>
-            </div>
-            <div>
-              <div class="code-card">
-                <div class="code-heading"><h3>HTML</h3><button type="button" class="copy-button" data-copy="file-code" data-copied="Đã sao chép">Sao chép</button></div>
-                <pre tabindex="0"><code id="file-code">&lt;mesh-avatar src="/path/to/your-avatar.mavatar"&gt;&lt;/mesh-avatar&gt;</code></pre>
-              </div>
-              <p class="hint">Đặt src thành đường dẫn hoặc URL của tệp lưu trên trang web của bạn.</p>
-            </div>
-          </section>
-          <p id="notice" role="status"></p>
-        </div>
-      </div>
-    </main>
-    <footer class="site-footer shell">
-      <p>Miko © Yuki Shindo (AITuber OnAir). <a href="https://miko.aituberonair.com/#terms">Hướng dẫn sử dụng nhân vật Miko</a></p>
-    </footer>
+  <body>
+    <p>Tiếng Việt hiện là ngôn ngữ mặc định. <a href="../../embed/">Mở trang thử nhúng HTML</a>.</p>
   </body>
 </html>

@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="1枚のイラストから、まばたきや口パクをする2Dアバターを作れます。Mesh Avatar Studio で調整し、mesh-avatar でアプリに組み込めます。" />
+    <meta name="description" content="1枚のイラストから、まばたきや口パクをする2Dアバターを作れます。Mesh Avatar Studio で調整し、Gemini Nano や mesh-avatar でアプリに組み込めます。" />
     <title>Mesh Avatar Studio | 1枚のイラストを動かす</title>
     <link rel="canonical" href="https://khanhlegood12.github.io/mesh-avatar-studio/ja/" />
-    <link rel="alternate" hreflang="en" href="https://khanhlegood12.github.io/mesh-avatar-studio/" />
+    <link rel="alternate" hreflang="vi" href="https://khanhlegood12.github.io/mesh-avatar-studio/" />
+    <link rel="alternate" hreflang="en" href="https://khanhlegood12.github.io/mesh-avatar-studio/en/" />
     <link rel="alternate" hreflang="ja" href="https://khanhlegood12.github.io/mesh-avatar-studio/ja/" />
-    <link rel="alternate" hreflang="vi" href="https://khanhlegood12.github.io/mesh-avatar-studio/vi/" />
     <link rel="alternate" hreflang="x-default" href="https://khanhlegood12.github.io/mesh-avatar-studio/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Mesh Avatar Studio" />
@@ -16,8 +16,8 @@
     <meta property="og:description" content="1枚のイラストを2Dアバターに。ローカルのエディタで動きを調整し、mesh-avatar でアプリに組み込めます。" />
     <meta property="og:url" content="https://khanhlegood12.github.io/mesh-avatar-studio/ja/" />
     <meta property="og:locale" content="ja_JP" />
-    <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:locale:alternate" content="vi_VN" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:image" content="__SOCIAL_IMAGE__" />
     <meta property="og:image:width" content="1440" />
     <meta property="og:image:height" content="900" />
@@ -44,8 +44,8 @@
         <a class="header-link" href="https://github.com/khanhlegood12/mesh-avatar-studio">GitHub <span aria-hidden="true">↗</span></a>
       </nav>
       <div class="language-switcher">
-        <a class="header-link language-switch" href="../" lang="en" hreflang="en">English</a>
-        <a class="header-link language-switch" href="../vi/" lang="vi" hreflang="vi">Tiếng Việt</a>
+        <a class="header-link language-switch" href="../" lang="vi" hreflang="vi">Tiếng Việt</a>
+        <a class="header-link language-switch" href="../en/" lang="en" hreflang="en">English</a>
       </div>
     </header>
     <main id="main" class="shell">
@@ -61,6 +61,18 @@
             <a class="button secondary" href="https://www.npmjs.com/package/mesh-avatar">npm で見る <span aria-hidden="true">↗</span></a>
           </div>
           <p class="hero-note">エディタはローカルで動きます。</p>
+          <div class="hero-qr" aria-label="QRコードでスマートフォンから開く">
+            <div id="qr-code" class="qr-frame"></div>
+            <div class="qr-copy">
+              <p class="qr-title">QRコードでスマホから開く</p>
+              <p class="qr-hint">現在表示しているブラウザのURLを自動でコード化しています。</p>
+              <div class="qr-url-row">
+                <code id="qr-url" class="qr-url">https://khanhlegood12.github.io/mesh-avatar-studio/ja/</code>
+                <button id="qr-copy" type="button" class="qr-copy-btn">URLをコピー</button>
+              </div>
+              <span id="qr-feedback" class="sr-only" role="status"></span>
+            </div>
+          </div>
         </div>
         <figure class="demo">
           <div class="demo-panel">
@@ -77,12 +89,39 @@
                 <legend class="sr-only">アバターの操作</legend>
                 <div id="expressions" class="expression-chips" role="group" aria-label="表情"></div>
                 <div class="talk-row">
-                  <p id="demo-hint">ポインターを動かすと、その方向へ顔を向けます。</p>
+                  <p id="demo-hint">ポインターを動かすか画面に触れると、その方向へ顔を向けます。</p>
                   <button id="talk" class="talk-toggle" type="button" aria-pressed="false" aria-describedby="talk-hint"><span class="talk-indicator" aria-hidden="true"></span>口パク</button>
                 </div>
               </fieldset>
               <p id="talk-hint" class="demo-note">口の動きだけを試せます。音声は流れません。</p>
             </div>
+            <section id="nano-chat" class="nano-chat" aria-label="Gemini Nano でミコと会話">
+              <div class="nano-header">
+                <span class="nano-title">Gemini Nano · 端末内AI</span>
+                <span id="nano-status" class="nano-badge" data-state="checking" role="status">Gemini Nano を確認中…</span>
+              </div>
+              <div class="nano-prompts">
+                <button type="button" class="nano-chip" data-nano-prompt="こんにちはミコ！元気？">こんにちは！</button>
+                <button type="button" class="nano-chip" data-nano-prompt="Mesh Avatar Studio について短く教えて">Studio の紹介</button>
+                <button type="button" class="nano-chip" data-nano-prompt="Chào Miko, hôm nay bạn thế nào?">ベトナム語で話す</button>
+              </div>
+              <form id="nano-form" class="nano-form">
+                <input id="nano-input" type="text" maxlength="240" autocomplete="off" placeholder="ミコに話しかける（表情・口パク連動）…" aria-label="ミコへのメッセージ" />
+                <button id="nano-send" class="nano-send" type="submit">送信</button>
+              </form>
+              <div class="nano-toolbar">
+                <button id="nano-download" type="button" class="nano-action" hidden>Gemini Nano を準備</button>
+                <button id="nano-voice" type="button" class="nano-action" aria-pressed="false">音声で読み上げ</button>
+              </div>
+              <div id="nano-reply" class="nano-reply" hidden>
+                <p id="nano-reply-text" role="status"></p>
+                <p id="nano-reply-meta" class="nano-reply-meta"></p>
+              </div>
+              <details id="nano-guide" class="nano-guide">
+                <summary>Chrome で端末内の Gemini Nano を有効にする方法</summary>
+                <p>デスクトップ版 Chrome で <code>chrome://flags/#optimization-guide-on-device-model</code>（Enabled BypassPerfRequirement）と <code>chrome://flags/#prompt-api-for-gemini-nano</code> を有効にして再起動します。未有効時でもブラウザ内の即時応答と口パクが動作します。</p>
+              </details>
+            </section>
           </div>
           <figcaption>このプレビューも <a href="https://www.npmjs.com/package/mesh-avatar">mesh-avatar</a> で動いています。 <button type="button" class="view-code" data-open-dialog="code-dialog" aria-haspopup="dialog"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 4 2 8l3.5 4M10.5 4 14 8l-3.5 4" /></svg>コードを見る</button></figcaption>
         </figure>
@@ -100,11 +139,11 @@
           </article>
           <article class="feature-card">
             <h3>声に合わせた口パク</h3>
-            <p>声の大きさに合わせて口を動かせます。エディタでは母音や、かなの文章で口の形を確認できます。</p>
+            <p>声の大きさに合わせて口を動かせます。エディタでは母音や、かな・ベトナム語の文章で口の形を確認できます。</p>
           </article>
           <article class="feature-card">
-            <h3>顔の向きと傾き</h3>
-            <p>顔や視線をパラメーターで操作できます。エディタのプレビューで動きを確認しながら調整できます。</p>
+            <h3>端末内 Gemini Nano 連携</h3>
+            <p>Chrome の Gemini Nano で自然な会話を生成し、アバターの表情と口パクを自動で連動できます。</p>
           </article>
           <article class="feature-card">
             <h3>髪と飾りの揺れ</h3>
