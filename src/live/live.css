@@ -1,6 +1,6 @@
 :root { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #22344d; background: #f3f5f8; font-size: 14px; }
 * { box-sizing: border-box; }
-body { margin: 0; }
+body { margin: 0; overflow-x: clip; }
 button, select, input { font: inherit; }
 button, select, .obs-url { border: 1px solid #c8d3e2; border-radius: 7px; background: white; color: inherit; padding: 8px 10px; }
 button { cursor: pointer; }
@@ -34,7 +34,6 @@ input[type="color"] { width: 100%; height: 32px; border: 0; padding: 0; }
 .obs-url { font-size: 11px; margin: 10px 0; }
 .live-privacy { color: #546a87; font-size: 12px; margin: 0 4px; }
 .live-error { color: #aa2020; }
-@media (max-width: 800px) { .live-app { padding: 12px; } .live-layout { grid-template-columns: 1fr; } .live-view { position: static; } .live-preview { height: 55dvh; } .live-header { flex-wrap: wrap; } }
 .live-controls .live-lighting .lighting-controls { padding: 0 16px 16px; }
 .live-controls .live-lighting label { flex-direction: row; align-items: center; justify-content: space-between; gap: 8px; margin: 8px 0; }
 .live-controls .live-lighting .lighting-check { justify-content: flex-start; }
@@ -85,3 +84,59 @@ input[type="color"] { width: 100%; height: 32px; border: 0; padding: 0; }
 
 .live-body-support { margin: -4px 0 8px; padding: 8px 10px; border-left: 3px solid #c4d7ee; background: #f3f7fc; border-radius: 0 5px 5px 0; }
 .live-body-support small + small { margin-top: 4px; }
+
+/* Landscape tablets (921px–1080px) */
+@media (max-width: 1080px) {
+  .live-app { padding: 16px 20px; }
+  .live-layout { grid-template-columns: minmax(0, 1fr) 310px; gap: 18px; }
+}
+
+/* Portrait tablets (641px–920px): full-width stage above a clean 2-column control grid */
+@media (max-width: 920px) {
+  .live-app { padding: 14px 18px calc(24px + env(safe-area-inset-bottom, 0px)); }
+  .live-header { flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+  .live-layout { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .live-view { position: static; }
+  .live-preview { height: clamp(320px, 50dvh, 520px); min-height: 0; }
+  .live-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 14px; }
+  .live-controls > .live-privacy, .live-controls > .live-warning { grid-column: 1 / -1; }
+}
+
+/* Phones (<= 640px) */
+@media (max-width: 640px) {
+  .live-app { padding: 12px 14px calc(24px + env(safe-area-inset-bottom, 0px)); }
+  .live-header { margin-bottom: 12px; gap: 8px; }
+  .live-preview { height: clamp(260px, 46dvh, 400px); }
+  .live-controls { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .live-controls section { padding: 14px; }
+  button, select, input[type="text"], .remote-field input { min-height: 44px; font-size: 16px; }
+  .live-languages { flex-wrap: wrap; gap: 6px; }
+  .live-languages button { min-height: 40px; padding: 6px 10px; font-size: 13px; }
+  .live-buttons button, .live-open { flex: 1 1 auto; text-align: center; }
+  .live-expression > summary, .live-lighting > summary, .live-overlays > summary { min-height: 46px; padding: 12px 14px; }
+  .live-expression-body, .lighting-presets { padding-inline: 14px; }
+  .live-controls .live-lighting .lighting-controls { padding: 0 14px 14px; }
+  .live-controls .live-lighting select { max-width: 100%; }
+  .remote-field { flex-direction: column; }
+  .camera-preview { max-height: 240px; }
+}
+
+/* Small phones (<= 420px) */
+@media (max-width: 420px) {
+  .live-app { padding: 10px 12px calc(20px + env(safe-area-inset-bottom, 0px)); }
+  h1 { font-size: 18px; }
+  .preset-slots { grid-template-columns: minmax(0, 1fr); }
+  .expression-buttons { gap: 6px; }
+  .expression-buttons button { padding: 8px; font-size: 13px; }
+}
+
+/* Landscape phones */
+@media (max-height: 500px) and (max-width: 920px) {
+  .live-preview { height: 70dvh; }
+}
+
+/* Touch devices: roomier controls and range sliders */
+@media (pointer: coarse) {
+  input[type="range"] { min-height: 32px; }
+  input[type="checkbox"] { width: 20px; height: 20px; }
+}
