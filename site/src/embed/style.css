@@ -34,15 +34,34 @@
 .control-panel .file-button { display: inline-flex; align-items: center; margin: 0; }
 .file-input { position: absolute; width: 1px; height: 1px; padding: 0; border: 0; clip-path: inset(50%); overflow: hidden; white-space: nowrap; }
 .file-input:focus-visible + .file-button, .embed-page input[type='text']:focus-visible, .embed-page select:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-@media (max-width: 1000px) {
-  .embed-layout { grid-template-columns: minmax(240px, .7fr) minmax(0, 1fr); }
+@media (max-width: 1024px) {
+  .embed-layout { grid-template-columns: minmax(240px, .72fr) minmax(0, 1fr); gap: 20px; }
   .control-panel { grid-template-columns: 1fr; }
 }
+@media (max-width: 860px) {
+  .embed-layout { grid-template-columns: 1fr; gap: 20px; margin-top: 20px; }
+  .embed-stage { position: static; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+  .embed-stage mesh-avatar { width: min(100%, 320px); }
+}
 @media (max-width: 760px) {
-  .embed-page .shell { width: calc(100% - 32px); }
-  .embed-page .site-header { flex-wrap: wrap; padding-block: 16px; }
+  .embed-page { padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)); }
+  .embed-page .shell { width: min(680px, calc(100% - 32px)); }
+  .embed-page .site-header { flex-wrap: wrap; padding-block: 14px 8px; }
+  .embed-page .intro { padding-block: 24px 16px; }
   .embed-page .primary-nav { gap: 16px; }
-  .embed-layout { grid-template-columns: 1fr; }
-  .embed-stage { position: static; }
-  .embed-stage mesh-avatar { width: min(100%, 300px); }
+  .control-panel { padding: 16px; gap: 14px; }
+  .control-panel input[type='text'], .control-panel select { font-size: 16px; min-height: 44px; }
+  .control-panel button:not(.copy-button), .control-panel .file-button { min-height: 44px; }
+  .embed-stage mesh-avatar { width: min(100%, 280px); }
+}
+@media (max-width: 480px) {
+  .embed-page .shell { width: calc(100% - 24px); }
+  .embed-stage { padding: 12px; }
+  .embed-stage mesh-avatar { width: min(100%, 250px); }
+  .control-panel { padding: 14px; }
+  .control-panel .expression-chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .control-panel .expression-chips button { white-space: normal; text-align: center; }
+  .control-panel form button { width: 100%; }
+  .file-actions { display: grid; grid-template-columns: 1fr; }
+  .control-panel .file-button, .file-actions button { justify-content: center; width: 100%; }
 }

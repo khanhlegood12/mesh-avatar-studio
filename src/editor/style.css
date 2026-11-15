@@ -6,7 +6,7 @@
   font-size: 13px; color: var(--ink); background: var(--canvas); font-synthesis: none;
 }
 * { box-sizing: border-box; }
-body { margin: 0; }
+body { margin: 0; overflow-x: clip; }
 main { padding: 16px; }
 h1 { font-size: 20px; letter-spacing: -.5px; margin: 0; }
 h2 { font-size: 14px; margin: 0; }
@@ -245,16 +245,6 @@ main:has(.stale) .editor-panel, main:has(.stale) .parts-panel { height: calc(100
   main:has(.stale) .editor-panel { height: 650px; }
   main:has(.project-location) .editor-panel { height: 650px; }
 }
-@media (max-width: 760px) {
-  main { padding: 8px; }
-  .toolbar { align-items: flex-start; flex-wrap: wrap; margin-bottom: 8px; }
-  .toolbar nav { flex-wrap: wrap; gap: 4px; }
-  .workspace { grid-template-columns: minmax(0, 1fr); }
-  .parts-panel { max-height: 280px; }
-  .editor-panel { height: 520px; }
-  .right-column { grid-column: 1; grid-template-columns: 1fr; }
-  .inspector { max-height: 500px; }
-}
 
 .zoom-value { min-width: 60px; }
 .wheel-setting { display: flex; gap: 8px; align-items: center; justify-content: flex-end; font-size: 11px; color: var(--muted); padding: 4px 12px 8px; }
@@ -315,3 +305,75 @@ main:has(.stale) .editor-panel, main:has(.stale) .parts-panel { height: calc(100
 .full-body-support dd { margin: 3px 0 0; font-weight: 500; }
 .full-body-support [data-state="set"] dd { color: #187747; }
 .full-body-support p { margin: 7px 0 0; line-height: 1.5; color: var(--muted); }
+
+/* Portrait tablets (761px–960px): full-width 2-column preview + inspector below the canvas */
+@media (max-width: 960px) {
+  main { padding: 12px; }
+  .toolbar { flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+  .toolbar nav { flex-wrap: wrap; gap: 6px; }
+  .toolbar-divider { display: none; }
+  .workspace { grid-template-columns: 200px minmax(0, 1fr); gap: 10px; }
+  .editor-panel,
+  main:has(.project-location) .editor-panel,
+  main:has(.stale) .editor-panel,
+  main:has(.project-location):has(.stale) .editor-panel {
+    height: clamp(440px, 58dvh, 600px);
+    min-height: 400px;
+  }
+  .parts-panel,
+  main:has(.project-location) .parts-panel,
+  main:has(.stale) .parts-panel {
+    max-height: clamp(440px, 58dvh, 600px);
+    height: auto;
+  }
+  .right-column { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .preview-canvas { height: 280px; }
+}
+
+/* Phones (<= 760px) */
+@media (max-width: 760px) {
+  main { padding: 10px 10px calc(24px + env(safe-area-inset-bottom, 0px)); }
+  .toolbar { align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+  .toolbar nav { width: 100%; gap: 6px; }
+  .workspace { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .parts-panel,
+  main:has(.project-location) .parts-panel,
+  main:has(.stale) .parts-panel {
+    max-height: 260px;
+    height: auto;
+  }
+  .editor-panel,
+  main:has(.project-location) .editor-panel,
+  main:has(.stale) .editor-panel,
+  main:has(.project-location):has(.stale) .editor-panel {
+    height: clamp(340px, 54dvh, 480px);
+    min-height: 340px;
+  }
+  .right-column { grid-column: 1; grid-template-columns: minmax(0, 1fr); }
+  .inspector { max-height: none; }
+  .preview-canvas { height: clamp(220px, 58vw, 320px); }
+  .zoom-tools { width: 100%; justify-content: flex-start; }
+  .sliders label { grid-template-columns: minmax(88px, 108px) minmax(0, 1fr) 32px; }
+  .audio-lip-presets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .language-toggle { flex-wrap: wrap; }
+  .stale:has(> button) { grid-template-columns: minmax(0, 1fr); row-gap: 8px; }
+  .stale:has(> button) > button { grid-column: 1; grid-row: auto; justify-self: start; }
+  .help-panel { position: fixed; inset: 12px; top: 12px; right: 12px; width: auto; max-height: calc(100dvh - 24px); overflow: auto; }
+  .project-menu, .archive-options { position: fixed; left: 12px; right: 12px; top: auto; bottom: 12px; width: auto; max-height: 75dvh; z-index: 20; }
+}
+
+/* Small phones (<= 480px) */
+@media (max-width: 480px) {
+  .fields { grid-template-columns: minmax(0, 1fr); }
+  .help-body dl > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .full-body-support dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lip-text-row { flex-wrap: wrap; }
+  .lip-text-row button { flex: 1 1 auto; }
+  input[type="text"], input[type="number"], textarea, select { font-size: 16px; }
+}
+
+@media (pointer: coarse) {
+  .sliders input, .audio-lip-sliders input, .lip-speed input { min-height: 28px; }
+  .part-select { padding: 8px; }
+  .preview-tabs button { min-height: 40px; }
+}

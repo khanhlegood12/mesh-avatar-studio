@@ -23,4 +23,22 @@
 .player-full .live-preview { height: 100dvh; border: 0; border-radius: 0; }
 .player-full .player-exit { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); padding: 6px 12px; border-radius: 999px; background: #162132cc; color: white; }
 
-@media (max-width: 480px) { .player-app { padding: 12px 16px; } }
+@media (max-width: 920px) {
+  .player-intro { margin: -4px 0 14px; }
+  .player-languages { gap: 10px; }
+  .player-language { min-height: 40px; display: inline-flex; align-items: center; padding-inline: 4px; }
+}
+
+@media (max-width: 640px) {
+  .player-app { padding: 12px 14px calc(24px + env(safe-area-inset-bottom, 0px)); }
+  .player-intro { font-size: 14px; }
+  .player-nano-body { padding: 12px 14px; }
+  .player-nano-form input { min-height: 44px; font-size: 16px; }
+  .player-nano-form button { min-height: 44px; padding-inline: 16px; }
+}
+
+@media (max-width: 420px) {
+  .player-app { padding: 10px 12px calc(20px + env(safe-area-inset-bottom, 0px)); }
+  .player-nano-form { flex-direction: column; }
+  .player-nano-form button { width: 100%; }
+}

@@ -181,3 +181,47 @@ describe('Current-URL QR Code generator', () => {
     expect(path).toContain('v1h-');
   });
 });
+
+describe('Phone and tablet responsive styles across site and Studio', () => {
+  it('defines tablet, phone, small-phone, and touch-safe rules across all stylesheets', async () => {
+    const landingCss = await readFile(new URL('../site/src/style.css', import.meta.url), 'utf8');
+    const embedCss = await readFile(new URL('../site/src/embed/style.css', import.meta.url), 'utf8');
+    const playerCss = await readFile(new URL('../site/src/player/player.css', import.meta.url), 'utf8');
+    const liveCss = await readFile(new URL('../src/live/live.css', import.meta.url), 'utf8');
+    const lightingCss = await readFile(new URL('../src/lighting/lighting.css', import.meta.url), 'utf8');
+    const editorCss = await readFile(new URL('../src/editor/style.css', import.meta.url), 'utf8');
+
+    // Overflow prevention and iOS-safe input sizing (16px avoids Safari auto-zoom).
+    expect(landingCss).toContain('overflow-x: clip');
+    expect(landingCss).toContain('@media (max-width: 1080px)');
+    expect(landingCss).toContain('@media (max-width: 900px)');
+    expect(landingCss).toContain('@media (max-width: 760px)');
+    expect(landingCss).toContain('@media (max-width: 480px)');
+    expect(landingCss).toContain('.nano-form input { font-size: 16px; min-height: 44px; }');
+
+    expect(embedCss).toContain('@media (max-width: 1024px)');
+    expect(embedCss).toContain('@media (max-width: 860px)');
+    expect(embedCss).toContain('@media (max-width: 760px)');
+    expect(embedCss).toContain('@media (max-width: 480px)');
+
+    expect(liveCss).toContain('overflow-x: clip');
+    expect(liveCss).toContain('@media (max-width: 1080px)');
+    expect(liveCss).toContain('@media (max-width: 920px)');
+    expect(liveCss).toContain('@media (max-width: 640px)');
+    expect(liveCss).toContain('@media (max-width: 420px)');
+    expect(liveCss).toContain('@media (pointer: coarse)');
+
+    expect(playerCss).toContain('@media (max-width: 920px)');
+    expect(playerCss).toContain('@media (max-width: 640px)');
+    expect(playerCss).toContain('@media (max-width: 420px)');
+
+    expect(lightingCss).toContain('@media (max-width: 480px)');
+    expect(lightingCss).toContain('@media (pointer: coarse)');
+
+    expect(editorCss).toContain('overflow-x: clip');
+    expect(editorCss).toContain('@media (max-width: 960px)');
+    expect(editorCss).toContain('@media (max-width: 760px)');
+    expect(editorCss).toContain('@media (max-width: 480px)');
+    expect(editorCss).toContain('@media (pointer: coarse)');
+  });
+});
