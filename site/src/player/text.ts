@@ -35,6 +35,13 @@ const en = {
   terms: 'Usage guidelines',
   presetHint: 'Save stores the current lighting in that slot. While this page or the avatar window is focused, Shift+1–8 apply presets.',
   expressionHint: 'While this page or the avatar window is focused, keys 1–8 switch expressions. Key 1 returns to neutral.',
+  nanoTitle: 'Gemini Nano AI',
+  nanoReady: 'Ready',
+  nanoPlaceholder: 'Say something to the avatar…',
+  nanoSend: 'Send',
+  nanoThinking: 'Thinking…',
+  nanoVoice: 'Read aloud',
+  nanoHint: 'Uses Chrome on-device Gemini Nano when available (tuned for natural Vietnamese), with instant local fallback and phonetic lip sync.',
 };
 
 const ja: typeof en = {
@@ -72,6 +79,13 @@ const ja: typeof en = {
   terms: '利用ガイドライン',
   presetHint: '「保存」で今のライティングをその枠に保存します。この画面かアバターウィンドウを操作している間は、Shift+1〜8でプリセットを呼び出せます。',
   expressionHint: 'この画面かアバターウィンドウを操作している間は、キー1〜8で表情を切り替えられます。通常に戻すときはキー1を押します。',
+  nanoTitle: 'Gemini Nano AI',
+  nanoReady: '利用可能',
+  nanoPlaceholder: 'アバターに話しかける…',
+  nanoSend: '送信',
+  nanoThinking: '考え中…',
+  nanoVoice: '音声読み上げ',
+  nanoHint: '対応ブラウザでは端末内の Gemini Nano を使い、口パクと表情を連動させます。未対応環境でもローカル応答で試せます。',
 };
 
 const vi: typeof en = {
@@ -109,6 +123,13 @@ const vi: typeof en = {
   terms: 'Hướng dẫn sử dụng nhân vật',
   presetHint: 'Bấm Lưu để lưu ánh sáng hiện tại vào ô đó. Khi trang này hoặc cửa sổ avatar đang được chọn, nhấn Shift+1–8 để áp dụng thiết lập sẵn.',
   expressionHint: 'Khi trang này hoặc cửa sổ avatar đang được chọn, nhấn phím 1–8 để đổi biểu cảm. Phím 1 đưa về bình thường.',
+  nanoTitle: 'Trò chuyện Gemini Nano (Tiếng Việt)',
+  nanoReady: 'Sẵn sàng',
+  nanoPlaceholder: 'Nhắn tiếng Việt cho avatar…',
+  nanoSend: 'Gửi',
+  nanoThinking: 'Đang trả lời…',
+  nanoVoice: 'Đọc giọng tiếng Việt',
+  nanoHint: 'Tối ưu cho Gemini Nano trên Chrome bằng tiếng Việt có dấu tự nhiên, kèm đồng bộ khẩu hình tiếng Việt và phản hồi nội bộ tức thì.',
 };
 
 export const playerText = { en, ja, vi };

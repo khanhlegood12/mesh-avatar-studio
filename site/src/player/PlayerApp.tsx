@@ -1,5 +1,5 @@
 import { colorHex, LIVE_EXPRESSIONS, loadMeshAvatar, type LiveExpression, type MeshAvatar } from 'mesh-avatar';
-import { useEffect, useRef, useState, type DragEvent } from 'react';
+import { useEffect, useRef, useState, type DragEvent, type FormEvent } from 'react';
 import { Icon } from '../../../src/editor/Icon';
 import { LightHandle, LightingControls, lightingText } from '../../../src/lighting/Controls';
 import { loadLightingPresets, sameLighting, saveLightingPresets } from '../../../src/lighting/presets';
@@ -9,6 +9,8 @@ import { MicrophoneControls } from '../../../src/live/MicrophoneControls';
 import { CameraCapture, MicrophoneCapture, type BackgroundTracking, type CameraState, type MicState } from '../../../src/live/media';
 import { backgroundColor } from '../../../src/live/settings';
 import { FacePose, type TrackingOptions } from '../../../src/live/tracking';
+import { checkGeminiNanoAvailability, GeminiNanoClient, speakWithBrowserVoice, type NanoAvailability } from '../gemini-nano';
+import { toSpeakableKana } from '../vietnamese-lip-sync';
 import { runAvatarLoop } from './loop';
 import { playerText, type PlayerLanguage } from './text';
 
@@ -50,6 +52,12 @@ export function PlayerApp({ language }: { language: PlayerLanguage }) {
   const [backgroundStatus, setBackgroundStatus] = useState<BackgroundTracking>(null);
   const [popup, setPopup] = useState<Window | null>(null);
   const [fullWindow, setFullWindow] = useState(false), [exitHint, setExitHint] = useState(false);
+  const [nanoAvailability, setNanoAvailability] = useState<NanoAvailability>('unavailable');
+  const [nanoInput, setNanoInput] = useState('');
+  const [nanoReply, setNanoReply] = useState('');
+  const [nanoBusy, setNanoBusy] = useState(false);
+  const [nanoVoice, setNanoVoice] = useState(false);
+  const nanoClient = useRef<GeminiNanoClient | null>(null);
   const stage = useRef<HTMLDivElement>(null), video = useRef<HTMLVideoElement>(null), fileInput = useRef<HTMLInputElement>(null);
   // React never renders this canvas, so it can move to the avatar window and back.
   const [canvas] = useState(() => Object.assign(document.createElement('canvas'), { className: 'player-canvas' }));
@@ -60,6 +68,17 @@ export function PlayerApp({ language }: { language: PlayerLanguage }) {
   const pose = useRef(new FacePose());
   const controls = useRef({ options, gain, micState }); controls.current = { options, gain, micState };
   const refreshDevices = () => { void navigator.mediaDevices?.enumerateDevices().then(setDevices).catch(() => undefined); };
+
+  useEffect(() => {
+    const client = new GeminiNanoClient(language);
+    nanoClient.current = client;
+    void checkGeminiNanoAvailability().then(setNanoAvailability);
+    return () => {
+      client.destroy();
+      nanoClient.current = null;
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    };
+  }, [language]);
 
   useEffect(() => {
     canvas.dataset.testid = 'player-avatar';
@@ -173,6 +192,28 @@ export function PlayerApp({ language }: { language: PlayerLanguage }) {
     setPopup(win);
   };
 
+  const onNanoSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    const prompt = nanoInput.trim();
+    if (!prompt || nanoBusy || !nanoClient.current) return;
+    setNanoInput('');
+    setNanoBusy(true);
+    setNanoReply(t.nanoThinking);
+    try {
+      const reply = await nanoClient.current.ask(prompt, {
+        onChunk: partial => setNanoReply(partial),
+      });
+      if (reply.source === 'gemini-nano') setNanoAvailability('available');
+      setNanoReply(reply.text);
+      setExpression(reply.expression);
+      const kana = toSpeakableKana(reply.text);
+      if (kana) avatarRef.current?.speakKana(kana, { speed: language === 'vi' ? 8.5 : 7.5 });
+      if (nanoVoice) speakWithBrowserVoice(reply.text, language);
+    } finally {
+      setNanoBusy(false);
+    }
+  };
+
   const onDrag = (event: DragEvent) => {
     if (!event.dataTransfer.types.includes('Files')) return;
     event.preventDefault();
@@ -188,9 +229,9 @@ export function PlayerApp({ language }: { language: PlayerLanguage }) {
   const status = cameraState === 'running' ? tracking ? 'tracking' : 'lost' : cameraState;
   const sourceName = source.kind === 'sample' ? t.sample : source.file.name;
   const languageLinks: Record<PlayerLanguage, { lang: PlayerLanguage; label: string; href: string }[]> = {
-    en: [{ lang: 'ja', label: '日本語', href: '../ja/play/' }, { lang: 'vi', label: 'Tiếng Việt', href: '../vi/play/' }],
-    ja: [{ lang: 'en', label: 'English', href: '../../play/' }, { lang: 'vi', label: 'Tiếng Việt', href: '../../vi/play/' }],
-    vi: [{ lang: 'en', label: 'English', href: '../../play/' }, { lang: 'ja', label: '日本語', href: '../../ja/play/' }],
+    vi: [{ lang: 'en', label: 'English', href: '../en/play/' }, { lang: 'ja', label: '日本語', href: '../ja/play/' }],
+    en: [{ lang: 'vi', label: 'Tiếng Việt', href: '../../play/' }, { lang: 'ja', label: '日本語', href: '../../ja/play/' }],
+    ja: [{ lang: 'vi', label: 'Tiếng Việt', href: '../../play/' }, { lang: 'en', label: 'English', href: '../../en/play/' }],
   };
   const canPopOut = !!pictureInPicture();
   const stageBackground = { backgroundColor: background, backgroundImage: background === 'transparent' ? undefined : 'none' };
@@ -273,6 +314,18 @@ export function PlayerApp({ language }: { language: PlayerLanguage }) {
           </div><small>{t.presetHint}</small>
         </div>
         <LightingControls value={lighting} onChange={setLighting} language={language} />
+      </details>
+      <details className="live-expression player-nano" data-testid="nano-section">
+        <summary><Icon name="face" />{t.nanoTitle}{nanoAvailability === 'available' && <span className="expression-on">{t.nanoReady}</span>}</summary>
+        <div className="player-nano-body">
+          <form className="player-nano-form" onSubmit={event => { void onNanoSubmit(event); }}>
+            <input type="text" value={nanoInput} disabled={nanoBusy || viewState !== 'ready'} placeholder={t.nanoPlaceholder} aria-label={t.nanoPlaceholder} onChange={event => setNanoInput(event.target.value)} />
+            <button type="submit" className="live-primary" disabled={nanoBusy || viewState !== 'ready' || !nanoInput.trim()}>{t.nanoSend}</button>
+          </form>
+          <label className="live-check"><input type="checkbox" checked={nanoVoice} onChange={event => setNanoVoice(event.target.checked)} />{t.nanoVoice}</label>
+          {nanoReply && <p className="player-nano-reply" role="status">{nanoReply}</p>}
+          <small>{t.nanoHint}</small>
+        </div>
       </details>
       <p className="live-privacy">{t.privacy}</p>
       {source.kind === 'sample' && <p className="live-privacy">{t.credit} <a href={MIKO_TERMS}>{t.terms}</a></p>}

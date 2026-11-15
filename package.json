@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "dev:site": "vite --config site/vite.config.ts",
@@ -48,6 +50,7 @@
     "pngjs": "^7.0.0",
     "typescript": "^5.9.0",
     "typescript-eslint": "^8.0.0",
+    "uqr": "^0.1.3",
     "vite": "^7.0.0",
     "vitest": "^3.2.0"
   }

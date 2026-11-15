@@ -4,5 +4,5 @@ import './player.css';
 import { PlayerApp } from './PlayerApp';
 
 const lang = document.documentElement.lang.split('-')[0];
-const language = lang === 'ja' || lang === 'vi' ? lang : 'en';
+const language = lang === 'en' || lang === 'ja' ? lang : 'vi';
 createRoot(document.getElementById('root')!).render(<PlayerApp language={language} />);

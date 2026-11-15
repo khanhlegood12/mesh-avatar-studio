@@ -1,6 +1,9 @@
 import { LIVE_EXPRESSIONS, loadMeshAvatar, type LiveExpression, type MeshAvatar } from 'mesh-avatar';
 import { highlightCodeSamples } from './highlight';
 import { copy, language } from './messages';
+import { mountCurrentUrlQr } from './qr';
+import { checkGeminiNanoAvailability, GeminiNanoClient, speakWithBrowserVoice } from './gemini-nano';
+import { toSpeakableKana } from './vietnamese-lip-sync';
 import overviewImage from '../../docs/images/en/01-overview.png';
 import handlesImage from '../../docs/images/en/02-edit-handles.png';
 import lipSyncImage from '../../docs/images/en/03-lip-sync.png';
@@ -34,6 +37,21 @@ for (const image of document.querySelectorAll<HTMLImageElement>('img[data-screen
 }
 
 highlightCodeSamples();
+
+// Render the live QR code of the current browser URL for scanning on a phone.
+mountCurrentUrlQr(
+  document.querySelector<HTMLElement>('#qr-code'),
+  document.querySelector<HTMLElement>('#qr-url'),
+  document.querySelector<HTMLButtonElement>('#qr-copy'),
+  document.querySelector<HTMLElement>('#qr-feedback'),
+  {
+    ariaLabel: copy.qrAriaLabel,
+    copy: copy.qrCopyLink,
+    copied: copy.qrCopiedLink,
+    copySucceeded: copy.copySucceeded,
+    copyFailed: copy.copyFailed,
+  },
+);
 
 for (const opener of document.querySelectorAll<HTMLButtonElement>('[data-open-dialog]')) {
   const dialog = document.getElementById(opener.dataset.openDialog!) as HTMLDialogElement;
@@ -94,18 +112,20 @@ let lastFrame = 0;
 let elapsed = 0;
 const pointer = { active: false, x: 0, y: 0, smoothX: 0, smoothY: 0, weight: 0 };
 
+function setActiveExpression(name: LiveExpression) {
+  avatar?.setExpression(name);
+  for (const chip of expressions.querySelectorAll('button')) {
+    chip.setAttribute('aria-pressed', String(chip.dataset.expression === name));
+  }
+}
+
 for (const name of shownExpressions.filter(name => LIVE_EXPRESSIONS.includes(name))) {
   const button = document.createElement('button');
   button.type = 'button';
   button.textContent = copy.expressions[name];
   button.dataset.expression = name;
   button.setAttribute('aria-pressed', String(name === 'neutral'));
-  button.addEventListener('click', () => {
-    avatar?.setExpression(name);
-    for (const chip of expressions.querySelectorAll('button')) {
-      chip.setAttribute('aria-pressed', String(chip === button));
-    }
-  });
+  button.addEventListener('click', () => setActiveExpression(name));
   expressions.append(button);
 }
 
@@ -124,24 +144,156 @@ reducedMotion.addEventListener('change', updateMotionPreference);
 finePointer.addEventListener('change', updateMotionPreference);
 updateMotionPreference();
 
+function aimFromRect(rect: DOMRect, clientX: number, clientY: number) {
+  pointer.x = Math.max(-1, Math.min(1, (clientX - rect.left) / rect.width * 2 - 1));
+  pointer.y = Math.max(-1, Math.min(1, 1 - (clientY - rect.top) / rect.height * 2));
+  pointer.active = true;
+}
+
 hero.addEventListener('pointermove', event => {
   if (event.pointerType === 'touch' || reducedMotion.matches || !finePointer.matches) return;
-  const rect = hero.getBoundingClientRect();
-  pointer.x = Math.max(-1, Math.min(1, (event.clientX - rect.left) / rect.width * 2 - 1));
-  pointer.y = Math.max(-1, Math.min(1, 1 - (event.clientY - rect.top) / rect.height * 2));
-  pointer.active = true;
+  aimFromRect(hero.getBoundingClientRect(), event.clientX, event.clientY);
+});
+// Touch interaction on mobile phones (when opened via QR code).
+stage.addEventListener('pointerdown', event => {
+  if (event.pointerType !== 'touch' || reducedMotion.matches) return;
+  aimFromRect(stage.getBoundingClientRect(), event.clientX, event.clientY);
+});
+stage.addEventListener('pointermove', event => {
+  if (event.pointerType !== 'touch' || reducedMotion.matches || !pointer.active) return;
+  aimFromRect(stage.getBoundingClientRect(), event.clientX, event.clientY);
 });
 const releasePointer = () => { pointer.active = false; };
 hero.addEventListener('pointerleave', releasePointer);
 hero.addEventListener('pointercancel', releasePointer);
+stage.addEventListener('pointerup', releasePointer);
+stage.addEventListener('pointercancel', releasePointer);
 window.addEventListener('blur', releasePointer);
 
 talk.addEventListener('click', () => {
   speaking = !speaking;
   talk.setAttribute('aria-pressed', String(speaking));
+  if (speaking) avatar?.stopLipSync();
   avatar?.setSpeaking(speaking);
   if (!speaking) avatar?.setVoiceLevel(0);
 });
+
+// Gemini Nano on-device Vietnamese chat wired directly to Miko's expressions and Vietnamese lip sync.
+const nanoClient = new GeminiNanoClient(language);
+const nanoBadge = document.querySelector<HTMLElement>('#nano-status');
+const nanoForm = document.querySelector<HTMLFormElement>('#nano-form');
+const nanoInput = document.querySelector<HTMLInputElement>('#nano-input');
+const nanoSend = document.querySelector<HTMLButtonElement>('#nano-send');
+const nanoDownload = document.querySelector<HTMLButtonElement>('#nano-download');
+const nanoVoiceButton = document.querySelector<HTMLButtonElement>('#nano-voice');
+const nanoReplyBox = document.querySelector<HTMLElement>('#nano-reply');
+const nanoReplyText = document.querySelector<HTMLElement>('#nano-reply-text');
+const nanoReplyMeta = document.querySelector<HTMLElement>('#nano-reply-meta');
+const nanoGuide = document.querySelector<HTMLDetailsElement>('#nano-guide');
+
+let voiceEnabled = false;
+let nanoBusy = false;
+
+function setNanoStatus(state: 'checking' | 'available' | 'downloadable' | 'downloading' | 'unavailable', detail?: string) {
+  if (!nanoBadge) return;
+  nanoBadge.dataset.state = state;
+  const labelMap = {
+    checking: copy.nanoChecking,
+    available: copy.nanoAvailable,
+    downloadable: copy.nanoDownloadable,
+    downloading: copy.nanoDownloading,
+    unavailable: copy.nanoUnavailable,
+  };
+  nanoBadge.textContent = detail ?? labelMap[state];
+  if (nanoDownload) nanoDownload.hidden = state !== 'downloadable';
+  if (nanoGuide) nanoGuide.hidden = state === 'available' || state === 'downloading';
+}
+
+if (nanoVoiceButton) {
+  nanoVoiceButton.addEventListener('click', () => {
+    voiceEnabled = !voiceEnabled;
+    nanoVoiceButton.setAttribute('aria-pressed', String(voiceEnabled));
+    nanoVoiceButton.textContent = voiceEnabled ? copy.nanoVoiceOn : copy.nanoVoiceOff;
+    if (!voiceEnabled && 'speechSynthesis' in window) window.speechSynthesis.cancel();
+  });
+}
+
+if (nanoDownload) {
+  nanoDownload.textContent = copy.nanoDownloadButton;
+  nanoDownload.addEventListener('click', async () => {
+    nanoDownload.disabled = true;
+    setNanoStatus('downloading');
+    try {
+      const ok = await nanoClient.ensureSession(percent => {
+        setNanoStatus('downloading', copy.nanoDownloadProgress.replace('{percent}', String(percent)));
+      });
+      setNanoStatus(ok ? 'available' : 'unavailable');
+    } catch {
+      setNanoStatus('unavailable');
+    } finally {
+      nanoDownload.disabled = false;
+    }
+  });
+}
+
+async function submitNanoPrompt(promptText: string) {
+  const clean = promptText.trim();
+  if (!clean || nanoBusy) return;
+  nanoBusy = true;
+  if (nanoSend) nanoSend.disabled = true;
+  if (nanoReplyBox) nanoReplyBox.hidden = false;
+  if (nanoReplyText) nanoReplyText.textContent = copy.nanoThinking;
+  if (nanoReplyMeta) nanoReplyMeta.textContent = '';
+
+  // Stop looping Talk button so Vietnamese phonetic lip sync drives the mouth cleanly.
+  if (speaking) {
+    speaking = false;
+    talk.setAttribute('aria-pressed', 'false');
+    avatar?.setSpeaking(false);
+    avatar?.setVoiceLevel(0);
+  }
+
+  try {
+    const reply = await nanoClient.ask(clean, {
+      onChunk: partial => {
+        if (nanoReplyText) nanoReplyText.textContent = partial;
+      },
+      onProgress: percent => {
+        setNanoStatus('downloading', copy.nanoDownloadProgress.replace('{percent}', String(percent)));
+      },
+    });
+    if (reply.source === 'gemini-nano') setNanoStatus('available');
+    if (nanoReplyText) nanoReplyText.textContent = reply.text;
+    if (nanoReplyMeta) {
+      nanoReplyMeta.textContent = `${copy.expressions[reply.expression]} · ${reply.source === 'gemini-nano' ? copy.nanoSourceGemini : copy.nanoSourceLocal}`;
+    }
+    setActiveExpression(reply.expression);
+    const kana = toSpeakableKana(reply.text);
+    if (kana && avatar) avatar.speakKana(kana, { speed: language === 'vi' ? 8.5 : 7.5 });
+    if (voiceEnabled) speakWithBrowserVoice(reply.text, language);
+  } finally {
+    nanoBusy = false;
+    if (nanoSend) nanoSend.disabled = false;
+  }
+}
+
+if (nanoForm && nanoInput) {
+  nanoForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const text = nanoInput.value;
+    nanoInput.value = '';
+    void submitNanoPrompt(text);
+  });
+  for (const chip of document.querySelectorAll<HTMLButtonElement>('[data-nano-prompt]')) {
+    chip.addEventListener('click', () => {
+      const prompt = chip.dataset.nanoPrompt ?? '';
+      nanoInput.value = '';
+      void submitNanoPrompt(prompt);
+    });
+  }
+  setNanoStatus('checking');
+  void checkGeminiNanoAvailability().then(state => setNanoStatus(state));
+}
 
 function frame(now: number) {
   if (!avatar) return;
@@ -196,6 +348,8 @@ window.addEventListener('pagehide', event => {
   if (!event.persisted) {
     disposed = true;
     visibility.disconnect();
+    nanoClient.destroy();
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     avatar?.destroy();
   }
 });

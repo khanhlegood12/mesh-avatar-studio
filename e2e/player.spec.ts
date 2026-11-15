@@ -42,7 +42,7 @@ const ready = (page: Page, name: string) => expect(page.getByTestId('player-stat
 test('player runs the sample with face tracking in the browser and makes no outside requests', async ({ context, page }) => {
   const outside = await guardNetwork(context);
   await fakeTracking(page);
-  await page.goto(`${site}play/`);
+  await page.goto(`${site}en/play/`);
   await ready(page, 'Miko (sample)');
   await expect(page.getByTestId('player-status')).toContainText('Avatar ready');
   const canvas = page.getByTestId('player-avatar');
@@ -65,7 +65,7 @@ test('player opens a dropped or chosen .mavatar and recovers from a broken file'
   const messages: string[] = [];
   page.on('console', message => messages.push(`${message.type()}: ${message.text()}`));
   page.on('framenavigated', frame => { if (frame === page.mainFrame()) messages.push(`navigated: ${frame.url()}`); });
-  await page.goto(`${site}play/`);
+  await page.goto(`${site}en/play/`);
   await ready(page, 'Miko (sample)');
   const archive = await (await page.request.get(`${site}miko.mavatar`)).body();
   await page.getByTestId('player-file').setInputFiles({ name: 'mine.mavatar', mimeType: 'application/octet-stream', buffer: archive });
@@ -93,7 +93,7 @@ test('player opens a file chosen while the sample is still loading', async ({ pa
   let release!: () => void;
   const held = new Promise<void>(resolve => { release = resolve; });
   await page.route('**/miko.mavatar', async route => { await held; await route.continue(); });
-  await page.goto(`${site}play/`);
+  await page.goto(`${site}en/play/`);
   await expect(page.getByTestId('player-status')).toHaveText('Loading avatar… · Miko (sample)');
   await page.getByTestId('player-file').setInputFiles({ name: 'early.mavatar', mimeType: 'application/octet-stream', buffer: archive });
   await expect(page.getByTestId('player-status')).toHaveText(/· early\.mavatar$/);
@@ -103,7 +103,7 @@ test('player opens a file chosen while the sample is still loading', async ({ pa
 });
 
 test('player shows only the avatar on an exact key colour for a window capture', async ({ page }) => {
-  await page.goto(`${site}play/`);
+  await page.goto(`${site}en/play/`);
   await ready(page, 'Miko (sample)');
   await page.getByLabel('Background').selectOption('#00ff00');
   // Keys are ignored while a form control has focus.
@@ -120,7 +120,7 @@ test('player shows only the avatar on an exact key colour for a window capture',
 });
 
 test('player moves the avatar to its own window and back', async ({ page, context }) => {
-  await page.goto(`${site}play/`);
+  await page.goto(`${site}en/play/`);
   await ready(page, 'Miko (sample)');
   test.skip(!await page.evaluate(() => 'documentPictureInPicture' in window), 'Document Picture-in-Picture is unavailable');
   const opened = context.waitForEvent('page');
@@ -136,18 +136,24 @@ test('player moves the avatar to its own window and back', async ({ page, contex
   await expect(page.getByRole('button', { name: 'Open avatar window' })).toBeVisible();
 });
 
-test('Japanese player page uses Japanese text and links back to the English page', async ({ page }) => {
+test('default player page uses Vietnamese text and links to English and Japanese pages', async ({ page }) => {
+  await page.goto(`${site}play/`);
+  await expect(page.getByTestId('player-status')).toContainText('Avatar đã sẵn sàng');
+  await expect(page.getByRole('link', { name: 'English' })).toHaveAttribute('href', '../en/play/');
+  await expect(page.getByRole('link', { name: '日本語' })).toHaveAttribute('href', '../ja/play/');
+  expect(await readFile(new URL('../site/play/index.html', import.meta.url), 'utf8')).toContain('lang="vi"');
+});
+
+test('Japanese player page uses Japanese text and links to Vietnamese and English pages', async ({ page }) => {
   await page.goto(`${site}ja/play/`);
   await expect(page.getByTestId('player-status')).toContainText('アバターの準備ができました');
-  await expect(page.getByRole('link', { name: 'English' })).toHaveAttribute('href', '../../play/');
-  await expect(page.getByRole('link', { name: 'Tiếng Việt' })).toHaveAttribute('href', '../../vi/play/');
+  await expect(page.getByRole('link', { name: 'Tiếng Việt' })).toHaveAttribute('href', '../../play/');
+  await expect(page.getByRole('link', { name: 'English' })).toHaveAttribute('href', '../../en/play/');
   expect(await readFile(new URL('../site/ja/play/index.html', import.meta.url), 'utf8')).toContain('lang="ja"');
 });
 
-test('Vietnamese player page uses Vietnamese text and links to English and Japanese pages', async ({ page }) => {
+test('legacy /vi/play/ path redirects to the default Vietnamese player page', async ({ page }) => {
   await page.goto(`${site}vi/play/`);
+  await expect(page).toHaveURL(`${site}play/`);
   await expect(page.getByTestId('player-status')).toContainText('Avatar đã sẵn sàng');
-  await expect(page.getByRole('link', { name: 'English' })).toHaveAttribute('href', '../../play/');
-  await expect(page.getByRole('link', { name: '日本語' })).toHaveAttribute('href', '../../ja/play/');
-  expect(await readFile(new URL('../site/vi/play/index.html', import.meta.url), 'utf8')).toContain('lang="vi"');
 });

@@ -23,6 +23,7 @@ function socialImage(): Plugin {
     transformIndexHtml: {
       order: 'post',
       handler(html, context) {
+        if (!html.includes('__SOCIAL_IMAGE__')) return html;
         const language = context.filename === fromHere('./ja/index.html') ? 'ja' : 'en';
         const screenshot = `docs/images/${language}/01-overview.png`;
         // Vite can prepend the base to the placeholder on the root development page.
@@ -98,15 +99,18 @@ export default defineConfig({
     outDir: 'dist',
     rollupOptions: {
       input: {
-        en: fromHere('./index.html'),
+        vi: fromHere('./index.html'),
+        en: fromHere('./en/index.html'),
         ja: fromHere('./ja/index.html'),
-        vi: fromHere('./vi/index.html'),
+        'vi-redirect': fromHere('./vi/index.html'),
         play: fromHere('./play/index.html'),
+        'en-play': fromHere('./en/play/index.html'),
         'ja-play': fromHere('./ja/play/index.html'),
-        'vi-play': fromHere('./vi/play/index.html'),
+        'vi-play-redirect': fromHere('./vi/play/index.html'),
         embed: fromHere('./embed/index.html'),
+        'en-embed': fromHere('./en/embed/index.html'),
         'ja-embed': fromHere('./ja/embed/index.html'),
-        'vi-embed': fromHere('./vi/embed/index.html'),
+        'vi-embed-redirect': fromHere('./vi/embed/index.html'),
       },
       output: { banner: `/*! fflate\n${fflateLicense}\n*/` },
     },

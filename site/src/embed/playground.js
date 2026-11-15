@@ -1,4 +1,4 @@
-export function setupPlayground(root, { sampleURL, messages }) {
+export function setupPlayground(root, { sampleURL, messages, transformSpeech = text => text }) {
   const el = root.querySelector('mesh-avatar');
   const mouthStyles = {
     calm: { granularity: 0, openness: 0.5, closeSpeed: 0 },
@@ -93,7 +93,7 @@ export function setupPlayground(root, { sampleURL, messages }) {
   root.querySelector('#speech-form').addEventListener('submit', event => {
     event.preventDefault();
     speechCode();
-    void el.speak(speechText.value).catch(() => {
+    void el.speak(transformSpeech(speechText.value)).catch(() => {
       notice.textContent = root.dataset.error;
     });
   });
