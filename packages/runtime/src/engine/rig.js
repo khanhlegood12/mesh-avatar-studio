@@ -1,4 +1,5 @@
 import { createLegs } from './legs.js';
+import { createHeadSideFade } from './head-outline.js';
 import { createArms } from './arms.js';
 
 export const PARAMS = [
@@ -107,10 +108,12 @@ export function createRig(rig) {
 
   const sstep = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 
-  function headWeight(x, y) { return 1 - sstep(...HEAD.weightBand, y); }
+  // Optional head.weightOutline: outside it the head influence fades to zero (head-outline.js).
+  const sideFade = createHeadSideFade(HEAD) ?? (() => 1);
+  function headWeight(x, y) { return (1 - sstep(...HEAD.weightBand, y)) * sideFade(x, y); }
   // The turn bump already fades out towards its rim, so it only needs a gentle cut-off
   // (stacking both fades is what sheared the neck).
-  function turnWeight(x, y) { return 1 - sstep(...HEAD.turnBand, y); }
+  function turnWeight(x, y) { return (1 - sstep(...HEAD.turnBand, y)) * sideFade(x, y); }
 
   // Hair strands: rest polylines root -> tip (4 nodes each), traced from the drawing.
   // Each one is a small spring chain in physics.js; vertices follow the strands near them.
