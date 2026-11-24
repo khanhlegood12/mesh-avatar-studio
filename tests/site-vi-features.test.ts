@@ -224,4 +224,15 @@ describe('Phone and tablet responsive styles across site and Studio', () => {
     expect(editorCss).toContain('@media (max-width: 480px)');
     expect(editorCss).toContain('@media (pointer: coarse)');
   });
+
+  it('separates build and deploy jobs in pages.yml with Node 24 actions to avoid artifact race conditions', async () => {
+    const pagesYml = await readFile(new URL('../.github/workflows/pages.yml', import.meta.url), 'utf8');
+    expect(pagesYml).toContain('  build:\n');
+    expect(pagesYml).toContain('  deploy:\n    needs: build\n');
+    expect(pagesYml).toContain('actions/checkout@v5');
+    expect(pagesYml).toContain('actions/setup-node@v5');
+    expect(pagesYml).toContain('actions/configure-pages@v6');
+    expect(pagesYml).toContain('actions/upload-pages-artifact@v5');
+    expect(pagesYml).toContain('actions/deploy-pages@v5');
+  });
 });
